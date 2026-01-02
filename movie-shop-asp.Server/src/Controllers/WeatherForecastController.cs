@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using movie_shop_asp.Server.src;
 
-namespace movie_shop_asp.Server.Controllers
+namespace movie_shop_asp.Server.src.Controllers
 {
     [ApiController]
     [Route("[controller]")]

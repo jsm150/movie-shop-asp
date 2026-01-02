@@ -1,4 +1,4 @@
-namespace movie_shop_asp.Server
+namespace movie_shop_asp.Server.src
 {
     public class WeatherForecast
     {
