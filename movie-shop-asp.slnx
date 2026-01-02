@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="movie-shop-asp.client/movie-shop-asp.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="movie-shop-asp.Server/movie-shop-asp.Server.csproj" />
+</Solution>

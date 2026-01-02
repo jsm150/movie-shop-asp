@@ -1,0 +1,6 @@
+@movie_shop_asp.Server_HostAddress = http://localhost:5057
+
+GET {{movie_shop_asp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
