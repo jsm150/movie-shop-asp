@@ -14,6 +14,8 @@ namespace Movie.Infrastructure.Configurations
             {
                 builder.Property(x => x.AdienceRating)
                     .HasConversion<string>();
+
+                builder.OwnsMany(x => x.Casts);
             }
         }
     }

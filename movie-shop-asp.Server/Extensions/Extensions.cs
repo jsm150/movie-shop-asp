@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Infrastructure.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace movie_shop_asp.Server.Extensions
 {
@@ -10,16 +11,18 @@ namespace movie_shop_asp.Server.Extensions
             public void AddApplicationServices()
             {
                 var services = builder.Services;
-                    
-                AddDbContext(services, builder.Configuration.GetConnectionString("DefaultConnection"));
-            }
-        }
+                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-        private static void AddDbContext(IServiceCollection services, string? connection) {
-            services.AddDbContext<MovieContext>(options =>
-            {
-                options.UseNpgsql(connection);
-            });
+                services.AddDbContext<MovieContext>(options =>
+                {
+                    options.UseNpgsql(connectionString, b =>
+                    {
+                        b.MigrationsAssembly(typeof(MovieContext).Assembly.GetName().Name);
+                        b.MigrationsHistoryTable("__EFMigrationsHistory", "Movie");
+                    });
+                });
+                
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Movie.Infrastructure.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("Movie"); 
             modelBuilder.ApplyConfiguration(new MovieEntityTypeConfiguration());
         }
 

@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Movie.Domain.Aggregate;
 
-public class Movie(MovieInfo movieInfo)
+public class Movie
 {
-    public MovieInfo MovieInfo { get; private set; } = movieInfo;
+    public long MovieId { get; private set; }
+    public required MovieInfo MovieInfo { get; init; } 
     public MovieStatus MovieStatus { get; private set; } = MovieStatus.PREPARING;
 
     public void MoveToCommingSoon()

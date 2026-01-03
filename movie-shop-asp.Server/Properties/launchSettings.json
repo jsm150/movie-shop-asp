@@ -12,7 +12,6 @@
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/scalar",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_HTTP_PORTS": "8080"
       },
