@@ -1,11 +1,12 @@
 ﻿using Movie.Domain.Exceptions;
+using SeedWork;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Movie.Domain.Aggregate;
 
-public class Movie
+public class Movie : IAggregateRoot
 {
     public long MovieId { get; private set; }
     public required MovieInfo MovieInfo { get; init; } 

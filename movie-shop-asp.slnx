@@ -6,4 +6,5 @@
   <Project Path="movie-shop-asp.Server/movie-shop-asp.Server.csproj" />
   <Project Path="Movie.Domain/Movie.Domain.csproj" />
   <Project Path="Movie.Infrastructure/Movie.Infrastructure.csproj" />
+  <Project Path="SeedWork/SeedWork.csproj" Id="861dad0f-3bc6-4245-bdd5-318a84acc7f2" />
 </Solution>

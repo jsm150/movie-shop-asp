@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure.EntityConfigurations;
+using SeedWork;
 
-namespace Movie.Infrastructure.Repositories
+namespace Movie.Infrastructure
 {
-    public class MovieContext : DbContext
+    public class MovieContext : DbContext, IUnitOfWork
     {
         public MovieContext(DbContextOptions<MovieContext> options) : base(options) { }
         
