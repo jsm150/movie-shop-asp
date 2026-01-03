@@ -1,10 +1,12 @@
+using Movie.Domain;
 using Microsoft.AspNetCore.Mvc;
 using movie_shop_asp.Server.src;
+
 
 namespace movie_shop_asp.Server.src.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries =
