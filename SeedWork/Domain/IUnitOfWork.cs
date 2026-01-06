@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeedWork
+namespace SeedWork.Domain
 {
     public interface IUnitOfWork : IDisposable
     {

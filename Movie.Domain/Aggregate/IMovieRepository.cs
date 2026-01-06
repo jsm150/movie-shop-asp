@@ -1,4 +1,4 @@
-﻿using SeedWork;
+﻿using SeedWork.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;

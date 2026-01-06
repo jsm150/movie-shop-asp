@@ -1,4 +1,4 @@
-﻿namespace SeedWork
+﻿namespace SeedWork.Domain
 {
     public interface IRepository<T> where T : IAggregateRoot
     {

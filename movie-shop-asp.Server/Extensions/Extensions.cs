@@ -2,7 +2,7 @@
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Repositories;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace movie_shop_asp.Server.Extensions
 {

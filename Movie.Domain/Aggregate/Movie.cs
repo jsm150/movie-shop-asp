@@ -1,5 +1,5 @@
 ﻿using Movie.Domain.Exceptions;
-using SeedWork;
+using SeedWork.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;

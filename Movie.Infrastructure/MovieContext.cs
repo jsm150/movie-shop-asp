@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure.EntityConfigurations;
-using SeedWork;
+using SeedWork.Domain;
 
 namespace Movie.Infrastructure
 {
