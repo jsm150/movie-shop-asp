@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Movie.Domain.Exceptions
 {
-    internal class MovieDomainException(string message) : Exception(message)
+    public class MovieDomainException(string message) : Exception(message)
     {
     }
 }

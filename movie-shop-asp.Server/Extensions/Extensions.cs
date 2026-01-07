@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
+using Movie.Domain.Exceptions;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Repositories;
+using movie_shop_asp.Server.ExceptionHandler;
 
 
 namespace movie_shop_asp.Server.Extensions
@@ -25,6 +27,12 @@ namespace movie_shop_asp.Server.Extensions
                 });
 
 
+                services.AddMediatR(cfg =>
+                {
+                    cfg.RegisterServicesFromAssemblyContaining<Program>();
+                });
+
+                services.AddExceptionHandler<GlobalExceptionHandler<MovieDomainException>>();
 
                 services.AddScoped<IMovieRepository, MovieRepository>();
             }
