@@ -16,7 +16,8 @@ namespace movie_shop_asp.Server.Extensions
             public void AddApplicationServices()
             {
                 var services = builder.Services;
-                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                var host = $"Host={builder.Configuration.GetConnectionString("Host")};";
+                var connectionString = host + builder.Configuration.GetConnectionString("DefaultConnection");
 
                 services.AddDbContext<MovieContext>(options =>
                 {
