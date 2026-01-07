@@ -23,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseExceptionHandler(options => { });
 
 app.UseAuthorization();
 

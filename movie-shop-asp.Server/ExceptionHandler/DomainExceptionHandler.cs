@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace movie_shop_asp.Server.ExceptionHandler;
 
-public class GlobalExceptionHandler<TDomainException> : IExceptionHandler
+public class DomainExceptionHandler<TDomainException> : IExceptionHandler
     where TDomainException : Exception
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)

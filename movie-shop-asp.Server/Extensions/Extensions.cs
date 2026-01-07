@@ -35,7 +35,10 @@ namespace movie_shop_asp.Server.Extensions
                     cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
                 });
 
-                services.AddExceptionHandler<GlobalExceptionHandler<MovieDomainException>>();
+                services.AddValidatorsFromAssemblyContaining<Program>();
+
+                services.AddExceptionHandler<ValidateExceptionHandler>();
+                services.AddExceptionHandler<DomainExceptionHandler<MovieDomainException>>();
 
                 services.AddScoped<IMovieRepository, MovieRepository>();
             }

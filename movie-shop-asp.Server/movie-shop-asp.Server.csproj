@@ -13,6 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
@@ -34,11 +36,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Movie.Domain\Movie.Domain.csproj" />
     <ProjectReference Include="..\Movie.Infrastructure\Movie.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Movie.API\Controller\" />
-    <Folder Include="Movie.API\Commands\" />
   </ItemGroup>
 
 </Project>
