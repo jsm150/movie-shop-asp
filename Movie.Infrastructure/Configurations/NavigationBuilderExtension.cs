@@ -15,6 +15,8 @@ namespace Movie.Infrastructure.Configurations
                 builder.Property(x => x.AdienceRating)
                     .HasConversion<string>();
 
+                builder.HasIndex(x => x.Title).IsUnique();
+
                 builder.OwnsMany(x => x.Casts);
             }
         }
