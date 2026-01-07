@@ -5,6 +5,7 @@ using Movie.Infrastructure;
 using Movie.Infrastructure.Repositories;
 using movie_shop_asp.Server.ExceptionHandler;
 using movie_shop_asp.Server.Movie.API.Application.Behaviors;
+using FluentValidation;
 
 
 namespace movie_shop_asp.Server.Extensions
