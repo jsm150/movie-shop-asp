@@ -4,6 +4,7 @@ using Movie.Domain.Exceptions;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Repositories;
 using movie_shop_asp.Server.ExceptionHandler;
+using movie_shop_asp.Server.Movie.API.Application.Behaviors;
 
 
 namespace movie_shop_asp.Server.Extensions
@@ -30,6 +31,8 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddMediatR(cfg =>
                 {
                     cfg.RegisterServicesFromAssemblyContaining<Program>();
+
+                    cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
                 });
 
                 services.AddExceptionHandler<GlobalExceptionHandler<MovieDomainException>>();
