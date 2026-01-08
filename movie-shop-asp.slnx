@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/tests/">
+    <Project Path="Movie.IntegrationTests/Movie.IntegrationTests.csproj" Id="88b12497-93b4-409f-ad00-cb522124d7a3" />
+  </Folder>
   <Project Path="movie-shop-asp.client/movie-shop-asp.client.esproj">
     <Build />
     <Deploy />

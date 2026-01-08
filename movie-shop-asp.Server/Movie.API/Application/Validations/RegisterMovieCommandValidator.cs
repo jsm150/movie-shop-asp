@@ -28,7 +28,7 @@ namespace movie_shop_asp.Server.Movie.API.Application.Validations
                 .MaximumLength(1000).WithMessage("Synopsis must not exceed 1000 characters.");
 
             RuleFor(x => x.ReleaseDate)
-                .GreaterThan(DateTime.MinValue).WithMessage("ReleaseDate is required.");
+                .GreaterThan(DateTimeOffset.MinValue).WithMessage("ReleaseDate is required.");
 
             RuleFor(x => x.Casts)
                 .NotEmpty().WithMessage("At least one cast member is required.");

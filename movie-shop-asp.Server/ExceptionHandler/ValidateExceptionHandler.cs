@@ -23,7 +23,7 @@ public class ValidateExceptionHandler : IExceptionHandler
 
         foreach (var error in validationException.Errors)
         {
-            problemDetails.Errors.Add(error.PropertyName, new[] { error.ErrorMessage });
+            problemDetails.Errors.Add(error.PropertyName, [error.ErrorMessage]);
         }
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
