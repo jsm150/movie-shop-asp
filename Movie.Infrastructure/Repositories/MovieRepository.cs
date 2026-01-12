@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
 using SeedWork.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace Movie.Infrastructure.Repositories
 {
@@ -15,6 +11,11 @@ namespace Movie.Infrastructure.Repositories
         public Domain.Aggregate.Movie Add(Domain.Aggregate.Movie movie)
         {
             return context.Movies.Add(movie).Entity;
+        }
+
+        public void Delete(Domain.Aggregate.Movie movie)
+        {
+            context.Movies.Remove(movie);
         }
 
         public async Task<bool> ExistsByTitle(string title)

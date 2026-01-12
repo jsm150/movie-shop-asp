@@ -15,5 +15,11 @@ namespace movie_shop_asp.Server.Movie.API.Controllers
             var ok = await mediator.Send(command, cancellationToken);
             return ok ? Ok() : StatusCode(500);
         }
+        [HttpDelete]
+        public async Task<ActionResult> DeleteMovie(DeleteMovieCommand command, CancellationToken cancellationToken)
+        {
+            var ok = await mediator.Send(command, cancellationToken);
+            return ok ? Ok() : StatusCode(500);
+        }
     }
 }

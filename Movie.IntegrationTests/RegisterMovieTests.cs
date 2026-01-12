@@ -10,7 +10,7 @@ using System.Net.Http.Json;
 namespace Movie.IntegrationTests;
 
 [Collection(nameof(IntegrationTestCollection))]
-public class RegisterMovieIntegrationTests(IntegrationTestWebAppFactory factory)
+public class RegisterMovieTests(IntegrationTestWebAppFactory factory)
     : IntegrationTestBase(factory)
 {
     [Fact]
