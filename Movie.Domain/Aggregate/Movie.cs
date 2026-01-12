@@ -1,16 +1,23 @@
 ﻿using Movie.Domain.Exceptions;
 using SeedWork.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Movie.Domain.Aggregate;
 
 public class Movie : IAggregateRoot
 {
+    private MovieInfo _movieInfo = null!;
     public long MovieId { get; private set; }
-    public required MovieInfo MovieInfo { get; init; } 
+    public required MovieInfo MovieInfo
+    {
+        get => _movieInfo;
+        init => _movieInfo = value;
+    }
     public MovieStatus MovieStatus { get; private set; } = MovieStatus.PREPARING;
+
+    public void UpdateMovieInfo(MovieInfo movieInfo)
+    {
+        _movieInfo = movieInfo;
+    }
 
     public void MoveToCommingSoon()
     {
@@ -22,7 +29,6 @@ public class Movie : IAggregateRoot
         {
             throw new MovieDomainException("PREPARING 이 아닌 상태에서 COMMING_SOON으로 변경하려고 함.");
         }
-
     }
 
     public void StartShowing()

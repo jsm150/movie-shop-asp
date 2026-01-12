@@ -9,7 +9,7 @@ using Xunit;
 namespace Movie.IntegrationTests;
 
 [Collection(nameof(IntegrationTestCollection))]
-public class MovieDeleteTests(IntegrationTestWebAppFactory factory) : IntegrationTestBase(factory)
+public class DeleteMovieTests(IntegrationTestWebAppFactory factory) : IntegrationTestBase(factory)
 {
     [Fact]
     public async Task DeleteMovie_WhenMovieExists_ReturnsOk_And_RemovesFromDatabase()
