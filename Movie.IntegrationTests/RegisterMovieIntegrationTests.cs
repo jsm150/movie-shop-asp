@@ -36,7 +36,26 @@ public class RegisterMovieIntegrationTests(IntegrationTestWebAppFactory factory)
         Assert.Equal(command.Director, savedMovie.MovieInfo.Director);
         Assert.Equal(command.RuntimeMinutes, savedMovie.MovieInfo.RuntimeMinutes);
         Assert.Equal(command.Synopsis, savedMovie.MovieInfo.Synopsis);
+        Assert.Equal(command.AdienceRating, savedMovie.MovieInfo.AdienceRating);
+        Assert.Equal(command.ReleaseDate, savedMovie.MovieInfo.ReleaseDate);
+        
+        // Genres 검증
+        Assert.Equal(command.Genres.Count, savedMovie.MovieInfo.Genres.Count);
+        foreach (var genre in command.Genres)
+        {
+            Assert.Contains(genre, savedMovie.MovieInfo.Genres);
+        }
+        
+        // Casts 검증
         Assert.Equal(command.Casts.Count, savedMovie.MovieInfo.Casts.Count);
+        foreach (var castDto in command.Casts)
+        {
+            var savedActor = savedMovie.MovieInfo.Casts.FirstOrDefault(a => a.Name == castDto.Name);
+            Assert.NotNull(savedActor);
+            Assert.Equal(castDto.Role, savedActor.Role);
+            Assert.Equal(castDto.DateOfBirth, savedActor.DateOfBirth);
+            Assert.Equal(castDto.National, savedActor.National);
+        }
     }
 
     [Fact]
