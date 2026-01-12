@@ -38,4 +38,8 @@
     <ProjectReference Include="..\Movie.Infrastructure\Movie.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Movie.API\Application\Validations\" />
+  </ItemGroup>
+
 </Project>
