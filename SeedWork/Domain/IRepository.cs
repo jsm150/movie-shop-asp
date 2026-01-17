@@ -1,4 +1,4 @@
-﻿namespace SeedWork.Domain
+﻿namespace Shared.Kernel.Domain
 {
     public interface IRepository<T> where T : IAggregateRoot
     {

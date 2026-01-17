@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace movie_shop_asp.Server.ExceptionHandler;
+namespace movie_shop_asp.Server.Application.ExceptionHandler;
 
 public class ValidateExceptionHandler : IExceptionHandler
 {

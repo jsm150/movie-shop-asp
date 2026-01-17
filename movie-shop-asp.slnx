@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/shared/">
+    <Project Path="SeedWork/Shared.Kernel.csproj" Id="861dad0f-3bc6-4245-bdd5-318a84acc7f2" />
+    <Project Path="Shared.IntegrationEvents/Shared.IntegrationEvents.csproj" Id="cee70def-f4e7-4c6f-a7ef-46ca14279290" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="Movie.IntegrationTests/Movie.IntegrationTests.csproj" Id="88b12497-93b4-409f-ad00-cb522124d7a3" />
   </Folder>

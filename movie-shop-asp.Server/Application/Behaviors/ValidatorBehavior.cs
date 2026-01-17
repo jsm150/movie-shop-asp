@@ -2,7 +2,7 @@
 using MediatR;
 
 
-namespace movie_shop_asp.Server.Movie.API.Application.Behaviors;
+namespace movie_shop_asp.Server.Application.Behaviors;
 
 
 public class ValidatorBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse> 
