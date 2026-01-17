@@ -19,6 +19,8 @@ public class Movie : Entity, IAggregateRoot
         _movieInfo = movieInfo;
     }
 
+    public bool CanRemove() => MovieStatus != MovieStatus.NOW_SHOWING;
+
     public void MoveToCommingSoon()
     {
         if (MovieStatus == MovieStatus.PREPARING)

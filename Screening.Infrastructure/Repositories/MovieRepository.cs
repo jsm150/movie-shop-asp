@@ -17,4 +17,9 @@ public class MovieRepository(IMovieContext context) : IMovieRepository
     {
         return await context.ScreeningMovies.FindAsync(movieId);
     }
+
+    public void Remove(MovieEntity movie)
+    {
+        context.ScreeningMovies.Remove(movie);
+    }
 }

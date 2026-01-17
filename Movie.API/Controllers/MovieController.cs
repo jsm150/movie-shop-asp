@@ -12,28 +12,28 @@ public class MovieController(IMediator mediator) : Controller
     [HttpPost]
     public async Task<ActionResult> RegisterMovie(RegisterMovieCommand command, CancellationToken cancellationToken)
     {
-        var ok = await mediator.Send(command, cancellationToken);
-        return ok ? Ok() : StatusCode(500);
+        await mediator.Send(command, cancellationToken);
+        return Ok();
     }
 
     [HttpPut]
     public async Task<ActionResult> UpdateMovie(UpdateMovieCommand command, CancellationToken cancellationToken)
     {
-        var ok = await mediator.Send(command, cancellationToken);
-        return ok ? Ok() : StatusCode(500);
+        await mediator.Send(command, cancellationToken);
+        return Ok();
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteMovie(DeleteMovieCommand command, CancellationToken cancellationToken)
     {
-        var ok = await mediator.Send(command, cancellationToken);
-        return ok ? Ok() : StatusCode(500);
+        await mediator.Send(command, cancellationToken);
+        return Ok();
     }
 
     [HttpPut("status")]
     public async Task<ActionResult> ChangeMovieStatus(ChangeMovieStatusCommand command, CancellationToken cancellationToken)
     {
-        var ok = await mediator.Send(command, cancellationToken);
-        return ok ? Ok() : StatusCode(500);
+        await mediator.Send(command, cancellationToken);
+        return Ok();
     }
 }
