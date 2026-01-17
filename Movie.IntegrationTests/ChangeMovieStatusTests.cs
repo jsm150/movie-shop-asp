@@ -3,13 +3,11 @@ using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
-using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;
-using movie_shop_asp.Server.Movie.API.Application.Commands;
-using Screening.Domain.Aggregate.MovieAggregate;
-using Xunit;
 using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
+using ScreeningMovieStatus = Screening.Domain.Aggregate.MovieAggregate.MovieStatus;
+
 
 namespace Movie.IntegrationTests;
 
@@ -265,6 +263,67 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(MovieStatus.PREPARING, updated.MovieStatus);
+        }
+    }
+
+    [Fact]
+    public async Task ChangeMovieStatus_PublishesIntegrationEvent_And_UpdatesScreeningMovieStatus()
+    {
+        // arrange: 등록 -> ScreeningMovies에도 생성되어 있어야 함(MovieCreatedIntegrationEvent 처리)
+        var register = new RegisterMovieCommand
+        {
+            Title = "상태변경 통합이벤트 테스트",
+            Director = "감독",
+            Genres = ["Action"],
+            RuntimeMinutes = 120,
+            AdienceRating = AdienceRating.ALL,
+            Synopsis = "synopsis",
+            ReleaseDate = DateTimeOffset.UtcNow.AddDays(10),
+            Casts =
+            [
+                new ActorDto
+                {
+                    Name = "배우",
+                    DateOfBirth = DateTimeOffset.UtcNow.AddYears(-30),
+                    National = "KR",
+                    Role = "주연"
+                }
+            ]
+        };
+
+        var registerResponse = await Client.PostAsJsonAsync("/api/movie", register);
+        registerResponse.EnsureSuccessStatusCode();
+
+
+        long movieId;
+        using (var scope = Factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
+            var entity = db.Movies.Single(m => m.MovieInfo.Title == register.Title);
+            movieId = entity.MovieId;
+
+            Assert.Equal(MovieStatus.PREPARING, entity.MovieStatus);
+            Assert.True(db.ScreeningMovies.Any(m => m.MovieId == movieId));
+
+            var screening = db.ScreeningMovies.Single(m => m.MovieId == movieId);
+            Assert.Equal(ScreeningMovieStatus.PREPARING, screening.MovieStatus);
+        }
+
+        // act: PREPARING -> COMMING_SOON (이때 MovieStatusChangedIntegrationEvent가 Add 되어야 함)
+        var command = new ChangeMovieStatusCommand { MovieId = movieId, Status = MovieStatus.COMMING_SOON };
+        var response = await Client.PutAsJsonAsync("/api/movie/status", command);
+        response.EnsureSuccessStatusCode();
+
+        // assert: Movie 상태 변경 + ScreeningMovies 상태도 이벤트로 함께 변경
+        using (var scope = Factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
+
+            var updatedMovie = db.Movies.Single(m => m.MovieId == movieId);
+            Assert.Equal(MovieStatus.COMMING_SOON, updatedMovie.MovieStatus);
+
+            var updatedScreeningMovie = db.ScreeningMovies.Single(m => m.MovieId == movieId);
+            Assert.Equal(ScreeningMovieStatus.COMMING_SOON, updatedScreeningMovie.MovieStatus);
         }
     }
 }
