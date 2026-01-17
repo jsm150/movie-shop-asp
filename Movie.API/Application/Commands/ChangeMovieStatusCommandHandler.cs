@@ -2,7 +2,7 @@ using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 
-namespace movie_shop_asp.Server.Movie.API.Application.Commands;
+namespace Movie.API.Application.Commands;
 
 public class ChangeMovieStatusCommandHandler(IMovieRepository movieRepository) : IRequestHandler<ChangeMovieStatusCommand, bool>
 {
@@ -35,6 +35,6 @@ public class ChangeMovieStatusCommandHandler(IMovieRepository movieRepository) :
                 throw new MovieDomainException("지원하지 않는 상태 변경입니다.");
         }
 
-        return (await movieRepository.UnitOfWork.SaveChangesAsync(cancellationToken)) > 0;
+        return await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

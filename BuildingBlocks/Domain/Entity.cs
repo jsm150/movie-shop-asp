@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Shared.Kernel.Domain;
+namespace BuildingBlocks.Domain;
 
 public abstract class Entity
 {

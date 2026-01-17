@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using movie_shop_asp.Server.Infrastructure;
@@ -11,9 +12,11 @@ using movie_shop_asp.Server.Infrastructure;
 namespace movie_shop_asp.Server.Migrations
 {
     [DbContext(typeof(MovieShopContext))]
-    partial class MovieShopContextModelSnapshot : ModelSnapshot
+    [Migration("20260117101851_AddScreeningMovieAggregate")]
+    partial class AddScreeningMovieAggregate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

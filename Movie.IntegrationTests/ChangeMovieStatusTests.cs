@@ -1,12 +1,15 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;
 using movie_shop_asp.Server.Movie.API.Application.Commands;
+using Screening.Domain.Aggregate.MovieAggregate;
 using Xunit;
+using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
 
 namespace Movie.IntegrationTests;
 
@@ -125,7 +128,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
             var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
-            Assert.Equal(MovieStatus.NOW_SHOWING, updated.MovieStatus);
+            Assert.Equal(Domain.Aggregate.MovieStatus.NOW_SHOWING, updated.MovieStatus);
         }
     }
 
@@ -164,7 +167,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
             movieId = db.Movies.Single(m => m.MovieInfo.Title == register.Title).MovieId;
         }
 
-        var toCommingSoon = new ChangeMovieStatusCommand { MovieId = movieId, Status = MovieStatus.COMMING_SOON };
+        var toCommingSoon = new ChangeMovieStatusCommand { MovieId = movieId, Status = Domain.Aggregate.MovieStatus.COMMING_SOON };
         var toCommingSoonResponse = await Client.PutAsJsonAsync("/api/movie/status", toCommingSoon);
         toCommingSoonResponse.EnsureSuccessStatusCode();
 

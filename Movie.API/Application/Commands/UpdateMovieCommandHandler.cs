@@ -2,7 +2,7 @@ using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 
-namespace movie_shop_asp.Server.Movie.API.Application.Commands;
+namespace Movie.API.Application.Commands;
 
 public class UpdateMovieCommandHandler(IMovieRepository movieRepository) : IRequestHandler<UpdateMovieCommand, bool>
 {
@@ -31,6 +31,6 @@ public class UpdateMovieCommandHandler(IMovieRepository movieRepository) : IRequ
 
         movie.UpdateMovieInfo(newInfo);
 
-        return (await movieRepository.UnitOfWork.SaveChangesAsync(cancellationToken)) > 0;
+        return await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

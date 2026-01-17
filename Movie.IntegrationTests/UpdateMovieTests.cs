@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Movie.API.Application.Commands;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;

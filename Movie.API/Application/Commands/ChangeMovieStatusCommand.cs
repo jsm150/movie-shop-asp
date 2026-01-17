@@ -1,7 +1,7 @@
 using MediatR;
 using Movie.Domain.Aggregate;
 
-namespace movie_shop_asp.Server.Movie.API.Application.Commands;
+namespace Movie.API.Application.Commands;
 
 public record ChangeMovieStatusCommand : IRequest<bool>
 {

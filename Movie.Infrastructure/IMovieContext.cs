@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shared.Kernel.Domain;
+﻿using BuildingBlocks.Domain;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Movie.Infrastructure;

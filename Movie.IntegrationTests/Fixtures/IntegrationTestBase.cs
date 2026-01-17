@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Movie.Infrastructure;
 using movie_shop_asp.Server.Infrastructure;
 using Respawn;
 using System.Net.Http.Json;
@@ -29,7 +28,7 @@ public abstract class IntegrationTestBase : IAsyncLifetime
         _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions
         {
             DbAdapter = DbAdapter.Postgres,
-            SchemasToInclude = ["Movie"]
+            SchemasToInclude = ["Movie", "Screening"]
         });
 
         await _respawner.ResetAsync(connection);

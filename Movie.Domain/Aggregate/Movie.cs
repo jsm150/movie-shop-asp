@@ -1,9 +1,9 @@
-﻿using Movie.Domain.Exceptions;
-using SeedWork.Domain;
+﻿using BuildingBlocks.Domain;
+using Movie.Domain.Exceptions;
 
 namespace Movie.Domain.Aggregate;
 
-public class Movie : IAggregateRoot
+public class Movie : Entity, IAggregateRoot
 {
     private MovieInfo _movieInfo = null!;
     public long MovieId { get; private set; }

@@ -1,8 +1,9 @@
 using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
+using movie_shop_asp.Server.Movie.API.Application.Commands;
 
-namespace movie_shop_asp.Server.Movie.API.Application.Commands;
+namespace Movie.API.Application.Commands;
 
 public class DeleteMovieCommandHandler(IMovieRepository movieRepository) : IRequestHandler<DeleteMovieCommand, bool>
 {
@@ -13,6 +14,6 @@ public class DeleteMovieCommandHandler(IMovieRepository movieRepository) : IRequ
 
         movieRepository.Delete(movie);
 
-        return (await movieRepository.UnitOfWork.SaveChangesAsync(cancellationToken)) > 0;
+        return await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

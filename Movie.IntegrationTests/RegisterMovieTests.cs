@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
@@ -39,14 +40,14 @@ public class RegisterMovieTests(IntegrationTestWebAppFactory factory)
         Assert.Equal(command.Synopsis, savedMovie.MovieInfo.Synopsis);
         Assert.Equal(command.AdienceRating, savedMovie.MovieInfo.AdienceRating);
         Assert.Equal(command.ReleaseDate, savedMovie.MovieInfo.ReleaseDate);
-        
+
         // Genres 검증
         Assert.Equal(command.Genres.Count, savedMovie.MovieInfo.Genres.Count);
         foreach (var genre in command.Genres)
         {
             Assert.Contains(genre, savedMovie.MovieInfo.Genres);
         }
-        
+
         // Casts 검증
         Assert.Equal(command.Casts.Count, savedMovie.MovieInfo.Casts.Count);
         foreach (var castDto in command.Casts)
@@ -57,6 +58,38 @@ public class RegisterMovieTests(IntegrationTestWebAppFactory factory)
             Assert.Equal(castDto.DateOfBirth, savedActor.DateOfBirth);
             Assert.Equal(castDto.National, savedActor.National);
         }
+    }
+
+    [Fact]
+    public async Task RegisterMovie_ShouldPublishIntegrationEvent_AndCreateScreeningMovie()
+    {
+        // Arrange
+        var command = CreateValidCommand();
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/api/movie", command);
+
+        // Assert - API 성공
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        // Assert - Movie 저장 + (통합 이벤트 처리 결과) Screening 저장
+        using var scope = Factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
+
+        var savedMovie = await context.Movies
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.MovieInfo.Title == command.Title);
+
+        Assert.NotNull(savedMovie);
+
+        var screeningMovie = await context.ScreeningMovies
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.MovieId == savedMovie.MovieId);
+
+        Assert.NotNull(screeningMovie);
+
+        // 상태 매핑 검증 (현재 도메인 기본값이 PREPARING이라고 가정)
+        Assert.Equal(Screening.Domain.Aggregate.MovieAggregate.MovieStatus.PREPARING, screeningMovie.MovieStatus);
     }
 
     [Fact]

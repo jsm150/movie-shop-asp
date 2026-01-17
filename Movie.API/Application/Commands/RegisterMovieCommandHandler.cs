@@ -1,11 +1,14 @@
-﻿using MediatR;
+﻿using IntegrationEvents;
+using IntegrationEvents.Events;
+using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 using MovieEntity = Movie.Domain.Aggregate.Movie;
 
-namespace movie_shop_asp.Server.Movie.API.Application.Commands;
+namespace Movie.API.Application.Commands;
 
-public class RegisterMovieCommandHandler(IMovieRepository movieRepository) : IRequestHandler<RegisterMovieCommand, bool>
+public class RegisterMovieCommandHandler(IMovieRepository movieRepository, InProcessIntegrationEventService integrationEventService) 
+    : IRequestHandler<RegisterMovieCommand, bool>
 {
 
     public async Task<bool> Handle(RegisterMovieCommand request, CancellationToken cancellationToken)
@@ -37,7 +40,24 @@ public class RegisterMovieCommandHandler(IMovieRepository movieRepository) : IRe
         };
 
         movieRepository.Add(movie);
-        return (await movieRepository.UnitOfWork.SaveChangesAsync(cancellationToken)) > 0;
+        await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+        var integrationEvent = new MovieCreatedIntegrationEvent
+        {
+            MovieId = movie.MovieId,
+            MovieStatus = movie.MovieStatus switch
+            {
+                Domain.Aggregate.MovieStatus.PREPARING => IntegrationEvents.Events.MovieStatus.PREPARING,
+                Domain.Aggregate.MovieStatus.COMMING_SOON => IntegrationEvents.Events.MovieStatus.COMMING_SOON,
+                Domain.Aggregate.MovieStatus.NOW_SHOWING => IntegrationEvents.Events.MovieStatus.NOW_SHOWING,
+                Domain.Aggregate.MovieStatus.ENDED => IntegrationEvents.Events.MovieStatus.ENDED,
+                _ => throw new NotImplementedException(),
+            }
+        };
+
+        integrationEventService.Add(integrationEvent);
+
+        return true;
     }
 }
 

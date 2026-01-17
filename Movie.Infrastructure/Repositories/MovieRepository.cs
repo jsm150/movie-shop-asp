@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Domain;
+using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
-using Shared.Kernel.Domain;
 
 namespace Movie.Infrastructure.Repositories
 {

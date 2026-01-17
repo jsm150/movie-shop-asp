@@ -1,4 +1,4 @@
-﻿using SeedWork.Domain;
+﻿using BuildingBlocks.Domain;
 
 namespace Movie.Domain.Aggregate
 {

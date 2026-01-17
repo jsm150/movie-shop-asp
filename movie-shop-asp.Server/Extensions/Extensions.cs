@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using IntegrationEvents;
+using Microsoft.EntityFrameworkCore;
+using Movie.API.Controllers;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 using Movie.Infrastructure;
@@ -6,7 +9,7 @@ using Movie.Infrastructure.Repositories;
 using movie_shop_asp.Server.Application.Behaviors;
 using movie_shop_asp.Server.Application.ExceptionHandler;
 using movie_shop_asp.Server.Infrastructure;
-
+using Screening.API.Application.IntegrationEventHandler;
 
 namespace movie_shop_asp.Server.Extensions
 {
@@ -33,8 +36,11 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddMediatR(cfg =>
                 {
                     cfg.RegisterServicesFromAssemblyContaining<Program>();
+                    cfg.RegisterServicesFromAssemblyContaining<MovieController>();
+                    cfg.RegisterServicesFromAssemblyContaining<MovieCreatedIntegrationEventHandler>();
 
                     cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
+                    cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
                 });
 
                 services.AddValidatorsFromAssemblyContaining<Program>();
@@ -42,8 +48,13 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddExceptionHandler<ValidateExceptionHandler>();
                 services.AddExceptionHandler<DomainExceptionHandler<MovieDomainException>>();
 
+                services.AddScoped<InProcessIntegrationEventService>();
+
                 services.AddScoped<IMovieRepository, MovieRepository>();
                 services.AddScoped<IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>());
+
+                services.AddScoped<Screening.Domain.Aggregate.MovieAggregate.IMovieRepository, Screening.Infrastructure.Repositories.MovieRepository>();
+                services.AddScoped<Screening.Infrastructure.IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>());
             }
         }
     }
