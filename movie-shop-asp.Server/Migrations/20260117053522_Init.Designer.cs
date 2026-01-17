@@ -4,23 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Movie.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using movie_shop_asp.Server.Infrastructure;
 
 #nullable disable
 
-namespace Movie.Infrastructure.Migrations
+namespace movie_shop_asp.Server.Migrations
 {
-    [DbContext(typeof(MovieContext))]
-    [Migration("20260107103414_TitleUniqueIndex")]
-    partial class TitleUniqueIndex
+    [DbContext(typeof(MovieShopContext))]
+    [Migration("20260117053522_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Movie")
                 .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 

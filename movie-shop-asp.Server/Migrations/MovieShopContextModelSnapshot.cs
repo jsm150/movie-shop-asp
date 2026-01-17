@@ -2,20 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using movie_shop_asp.Server.Infrastructure;
 
 #nullable disable
 
-namespace Movie.Infrastructure.Migrations
+namespace movie_shop_asp.Server.Migrations
 {
-    [DbContext(typeof(MovieContext))]
-    [Migration("20260103141117_AddMovieDomain")]
-    partial class AddMovieDomain
+    [DbContext(typeof(MovieShopContext))]
+    partial class MovieShopContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +36,7 @@ namespace Movie.Infrastructure.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", "Movie");
                 });
 
             modelBuilder.Entity("Movie.Domain.Aggregate.Movie", b =>
@@ -76,7 +74,10 @@ namespace Movie.Infrastructure.Migrations
 
                             b1.HasKey("MovieId");
 
-                            b1.ToTable("Movies");
+                            b1.HasIndex("Title")
+                                .IsUnique();
+
+                            b1.ToTable("Movies", "Movie");
 
                             b1.WithOwner()
                                 .HasForeignKey("MovieId");
@@ -109,7 +110,7 @@ namespace Movie.Infrastructure.Migrations
 
                                     b2.HasKey("MovieInfoMovieId", "Id");
 
-                                    b2.ToTable("Actor");
+                                    b2.ToTable("Actor", "Movie");
 
                                     b2.WithOwner()
                                         .HasForeignKey("MovieInfoMovieId");

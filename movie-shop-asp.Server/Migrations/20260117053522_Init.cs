@@ -4,16 +4,20 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Movie.Infrastructure.Migrations
+namespace movie_shop_asp.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMovieDomain : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Movie");
+
             migrationBuilder.CreateTable(
                 name: "Movies",
+                schema: "Movie",
                 columns: table => new
                 {
                     MovieId = table.Column<long>(type: "bigint", nullable: false)
@@ -34,6 +38,7 @@ namespace Movie.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Actor",
+                schema: "Movie",
                 columns: table => new
                 {
                     MovieInfoMovieId = table.Column<long>(type: "bigint", nullable: false),
@@ -50,20 +55,30 @@ namespace Movie.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Actor_Movies_MovieInfoMovieId",
                         column: x => x.MovieInfoMovieId,
+                        principalSchema: "Movie",
                         principalTable: "Movies",
                         principalColumn: "MovieId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movies_MovieInfo_Title",
+                schema: "Movie",
+                table: "Movies",
+                column: "MovieInfo_Title",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Actor");
+                name: "Actor",
+                schema: "Movie");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Movies",
+                schema: "Movie");
         }
     }
 }

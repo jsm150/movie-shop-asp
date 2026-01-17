@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Movie.Domain\Movie.Domain.csproj" />
-    <ProjectReference Include="..\SeedWork\SeedWork.csproj" />
+    <ProjectReference Include="..\SeedWork\Shared.Kernel.csproj" />
   </ItemGroup>
 
 </Project>

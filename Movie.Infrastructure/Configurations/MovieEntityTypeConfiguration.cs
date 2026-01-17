@@ -4,21 +4,23 @@ using Movie.Domain.Aggregate;
 using Movie.Infrastructure.Configurations;
 
 
-namespace Movie.Infrastructure.EntityConfigurations
+namespace Movie.Infrastructure.Configurations;
+
+public class MovieEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Aggregate.Movie>
 {
-    internal class MovieEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Aggregate.Movie>
+    public void Configure(EntityTypeBuilder<Domain.Aggregate.Movie> builder)
     {
-        public void Configure(EntityTypeBuilder<Domain.Aggregate.Movie> builder)
-        {
-            builder.HasKey(x => x.MovieId);
+        builder.ToTable("Movies", "Movie");
 
-            builder.OwnsOne(x => x.MovieInfo,
-                mi => mi.ConfigureMovieInfo()
-            );
+        builder.HasKey(x => x.MovieId);
 
-            builder.Property(x => x.MovieStatus)
-                .HasConversion<string>();
+        builder.OwnsOne(x => x.MovieInfo,
+            mi => mi.ConfigureMovieInfo()
+        );
 
-        }
+        builder.Property(x => x.MovieStatus)
+            .HasConversion<string>();
+
     }
 }
+

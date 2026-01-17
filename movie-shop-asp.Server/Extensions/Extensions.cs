@@ -3,9 +3,9 @@ using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Repositories;
-using movie_shop_asp.Server.ExceptionHandler;
-using movie_shop_asp.Server.Movie.API.Application.Behaviors;
-using FluentValidation;
+using movie_shop_asp.Server.Application.Behaviors;
+using movie_shop_asp.Server.Application.ExceptionHandler;
+using movie_shop_asp.Server.Infrastructure;
 
 
 namespace movie_shop_asp.Server.Extensions
@@ -20,12 +20,12 @@ namespace movie_shop_asp.Server.Extensions
                 var host = $"Host={builder.Configuration.GetConnectionString("Host")};";
                 var connectionString = host + builder.Configuration.GetConnectionString("DefaultConnection");
 
-                services.AddDbContext<MovieContext>(options =>
+                services.AddDbContext<MovieShopContext>(options =>
                 {
                     options.UseNpgsql(connectionString, b =>
                     {
-                        b.MigrationsAssembly(typeof(MovieContext).Assembly.GetName().Name);
-                        b.MigrationsHistoryTable("__EFMigrationsHistory", "Movie");
+                        b.MigrationsAssembly(typeof(MovieShopContext).Assembly.GetName().Name);
+                        b.MigrationsHistoryTable("__EFMigrationsHistory", "public");
                     });
                 });
 
@@ -43,6 +43,7 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddExceptionHandler<DomainExceptionHandler<MovieDomainException>>();
 
                 services.AddScoped<IMovieRepository, MovieRepository>();
+                services.AddScoped<IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>());
             }
         }
     }

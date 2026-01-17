@@ -36,10 +36,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Movie.Domain\Movie.Domain.csproj" />
     <ProjectReference Include="..\Movie.Infrastructure\Movie.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Movie.API\Application\Validations\" />
+    <ProjectReference Include="..\Shared.IntegrationEvents\Shared.IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

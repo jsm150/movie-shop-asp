@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
+using movie_shop_asp.Server.Infrastructure;
 using movie_shop_asp.Server.Movie.API.Application.Commands;
 using Xunit;
 
@@ -43,7 +44,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         long movieId;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var entity = db.Movies.Single(m => m.MovieInfo.Title == register.Title);
 
             movieId = entity.MovieId;
@@ -65,7 +66,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         // assert (DB)
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(MovieStatus.COMMING_SOON, updated.MovieStatus);
@@ -103,7 +104,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         long movieId;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             movieId = db.Movies.Single(m => m.MovieInfo.Title == register.Title).MovieId;
         }
 
@@ -121,7 +122,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         // assert (DB)
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(MovieStatus.NOW_SHOWING, updated.MovieStatus);
@@ -159,7 +160,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         long movieId;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             movieId = db.Movies.Single(m => m.MovieInfo.Title == register.Title).MovieId;
         }
 
@@ -181,7 +182,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         // assert (DB)
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(MovieStatus.ENDED, updated.MovieStatus);
@@ -235,7 +236,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         long movieId;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var entity = db.Movies.Single(m => m.MovieInfo.Title == register.Title);
             movieId = entity.MovieId;
 
@@ -257,7 +258,7 @@ public class ChangeMovieStatusTests(IntegrationTestWebAppFactory factory) : Inte
         // assert (DB): ¿©ÀüÈ÷ PREPARING
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(MovieStatus.PREPARING, updated.MovieStatus);

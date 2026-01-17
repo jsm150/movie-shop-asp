@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.Infrastructure;
+using movie_shop_asp.Server.Infrastructure;
 using Respawn;
 using System.Net.Http.Json;
 
@@ -21,7 +22,7 @@ public abstract class IntegrationTestBase : IAsyncLifetime
     public async Task InitializeAsync()
     {
         using var scope = Factory.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
+        var context = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
         var connection = context.Database.GetDbConnection();
         await connection.OpenAsync();
 

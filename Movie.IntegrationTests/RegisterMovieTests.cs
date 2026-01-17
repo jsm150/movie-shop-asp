@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Movie.Domain.Aggregate;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
+using movie_shop_asp.Server.Infrastructure;
 using movie_shop_asp.Server.Movie.API.Application.Commands;
 using System.Net;
 using System.Net.Http.Json;
@@ -26,7 +27,7 @@ public class RegisterMovieTests(IntegrationTestWebAppFactory factory)
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         using var scope = Factory.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
+        var context = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
 
         var savedMovie = await context.Movies
             .FirstOrDefaultAsync(m => m.MovieInfo.Title == command.Title);
@@ -111,7 +112,7 @@ public class RegisterMovieTests(IntegrationTestWebAppFactory factory)
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         using var scope = Factory.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
+        var context = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
 
         var savedMovie = await context.Movies
             .FirstOrDefaultAsync(m => m.MovieInfo.Title == command.Title);

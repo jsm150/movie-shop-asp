@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie.Domain.Aggregate;
-using SeedWork.Domain;
+using Shared.Kernel.Domain;
 
 namespace Movie.Infrastructure.Repositories
 {
-    public class MovieRepository(MovieContext context) : IMovieRepository
+    public class MovieRepository(IMovieContext context) : IMovieRepository
     {
         public IUnitOfWork UnitOfWork => context;
 

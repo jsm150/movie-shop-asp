@@ -1,9 +1,10 @@
-using System.Net;
-using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
+using movie_shop_asp.Server.Infrastructure;
 using movie_shop_asp.Server.Movie.API.Application.Commands;
+using System.Net;
+using System.Net.Http.Json;
 using Xunit;
 
 namespace Movie.IntegrationTests;
@@ -42,7 +43,7 @@ public class UpdateMovieTests(IntegrationTestWebAppFactory factory) : Integratio
         long movieId;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var entity = db.Movies.Single(m => m.MovieInfo.Title == register.Title);
 
             movieId = entity.MovieId;
@@ -90,7 +91,7 @@ public class UpdateMovieTests(IntegrationTestWebAppFactory factory) : Integratio
         // assert (DB): 값이 실제로 바뀌었는지 검증
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var updated = db.Movies.Single(m => m.MovieId == movieId);
 
             Assert.Equal(update.Title, updated.MovieInfo.Title);
@@ -147,7 +148,7 @@ public class UpdateMovieTests(IntegrationTestWebAppFactory factory) : Integratio
         string beforeTitle;
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
             var movie = db.Movies.Single(m => m.MovieInfo.Title == register.Title);
 
             existingMovieId = movie.MovieId;
@@ -186,7 +187,7 @@ public class UpdateMovieTests(IntegrationTestWebAppFactory factory) : Integratio
         // assert (DB): 기존 데이터가 영향 없음을 검증
         using (var scope = Factory.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+            var db = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
 
             var afterCount = db.Movies.Count();
             Assert.Equal(beforeCount, afterCount);

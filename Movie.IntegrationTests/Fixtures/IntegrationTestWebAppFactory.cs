@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.Infrastructure;
+using movie_shop_asp.Server.Infrastructure;
 
 namespace Movie.IntegrationTests.Fixtures;
 
@@ -17,7 +18,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         {
             // 기존 DbContext 등록 제거
             var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<MovieContext>));
+                d => d.ServiceType == typeof(DbContextOptions<MovieShopContext>));
 
             if (descriptor is not null)
             {
@@ -25,12 +26,12 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             }
 
             // 테스트용 DbContext 등록
-            services.AddDbContext<MovieContext>(options =>
+            services.AddDbContext<MovieShopContext>(options =>
             {
                 options.UseNpgsql(_dbFixture.ConnectionString, b =>
                 {
-                    b.MigrationsAssembly(typeof(MovieContext).Assembly.GetName().Name);
-                    b.MigrationsHistoryTable("__EFMigrationsHistory", "Movie");
+                    b.MigrationsAssembly(typeof(MovieShopContext).Assembly.GetName().Name);
+                    b.MigrationsHistoryTable("__EFMigrationsHistory", "public");
                 });
             });
         });
@@ -42,7 +43,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
         // 마이그레이션 적용
         using var scope = Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
+        var context = scope.ServiceProvider.GetRequiredService<MovieShopContext>();
         await context.Database.MigrateAsync();
     }
 
