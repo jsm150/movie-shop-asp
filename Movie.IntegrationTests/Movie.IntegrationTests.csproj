@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\movie-shop-asp.Server\movie-shop-asp.Server.csproj" />
+    <ProjectReference Include="..\movie-shop-asp.Server\Host.csproj" />
     <ProjectReference Include="..\Movie.Infrastructure\Movie.Infrastructure.csproj" />
   </ItemGroup>
 

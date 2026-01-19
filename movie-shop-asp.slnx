@@ -1,18 +1,28 @@
 <Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/rules.md" />
+    <File Path="docs/structure.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
+    <Project Path="IntegrationEvents/IntegrationEvents.csproj" />
+    <Project Path="movie-shop-asp.Server/Host.csproj" />
+  </Folder>
+  <Folder Name="/src/Movie/">
+    <Project Path="Movie.API/Movie.API.csproj" Id="de913498-c020-4073-940f-866ac6a4dde4" />
+    <Project Path="Movie.Domain/Movie.Domain.csproj" />
+    <Project Path="Movie.Infrastructure/Movie.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Screening/">
+    <Project Path="Screening.API/Screening.API.csproj" />
+    <Project Path="Screening.Domain/Screening.Domain.csproj" Id="69882717-1c84-4b5d-b2f6-9bbc702d8594" />
+    <Project Path="Screening.Infrastructure/Screening.Infrastructure.csproj" Id="ffdc6d40-166e-4ff1-be10-4ee19dc2d67b" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="Movie.IntegrationTests/Movie.IntegrationTests.csproj" Id="88b12497-93b4-409f-ad00-cb522124d7a3" />
   </Folder>
-  <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
-  <Project Path="IntegrationEvents/IntegrationEvents.csproj" />
   <Project Path="movie-shop-asp.client/movie-shop-asp.client.esproj">
     <Build />
     <Deploy />
   </Project>
-  <Project Path="movie-shop-asp.Server/movie-shop-asp.Server.csproj" />
-  <Project Path="Movie.API/Movie.API.csproj" Id="de913498-c020-4073-940f-866ac6a4dde4" />
-  <Project Path="Movie.Domain/Movie.Domain.csproj" />
-  <Project Path="Movie.Infrastructure/Movie.Infrastructure.csproj" />
-  <Project Path="Screening.API/Screening.API.csproj" />
-  <Project Path="Screening.Domain/Screening.Domain.csproj" Id="69882717-1c84-4b5d-b2f6-9bbc702d8594" />
-  <Project Path="Screening.Infrastructure/Screening.Infrastructure.csproj" Id="ffdc6d40-166e-4ff1-be10-4ee19dc2d67b" />
 </Solution>

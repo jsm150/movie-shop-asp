@@ -3,7 +3,6 @@ using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
 using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;
-using movie_shop_asp.Server.Movie.API.Application.Commands;
 using System.Net;
 using System.Net.Http.Json;
 

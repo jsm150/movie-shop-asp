@@ -3,7 +3,6 @@ using IntegrationEvents.Events;
 using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
-using movie_shop_asp.Server.Movie.API.Application.Commands;
 
 namespace Movie.API.Application.Commands;
 

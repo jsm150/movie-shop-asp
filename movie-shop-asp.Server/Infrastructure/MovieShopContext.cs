@@ -2,23 +2,28 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Configurations;
+using Screening.Domain.Aggregate.TheaterAggregate;
+using Screening.Infrastructure.Configurations;
+using Screening.Infrastructure;
 using System.Data;
 
 using MovieEntity = Movie.Domain.Aggregate.Movie;
-using IScreeningMovieContext = Screening.Infrastructure.IMovieContext;
-using ScreeningMovieTypeConfiguration = Screening.Infrastructure.Configurations.MovieEntityTypeConfiguration;
-using IntegrationEvents;
+using Screening.Domain.Aggregate.ScreenAggregate;
+
 
 namespace movie_shop_asp.Server.Infrastructure
 {
-    public class MovieShopContext(DbContextOptions<MovieShopContext> options) : 
+    public class MovieShopContext(DbContextOptions<MovieShopContext> options) :
         DbContext(options),
         IMovieContext,
-        IScreeningMovieContext
+        IScreeningContext
     {
         public DbSet<MovieEntity> Movies { get; set; }
         public DbSet<Screening.Domain.Aggregate.MovieAggregate.Movie> ScreeningMovies { get; set; }
-        
+
+        public DbSet<Theater> Theaters { get; set; }
+
+        public DbSet<Screen> Screens { get; set; }
 
         private IDbContextTransaction? _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
@@ -26,8 +31,10 @@ namespace movie_shop_asp.Server.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new MovieEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ScreeningMovieTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new Movie.Infrastructure.Configurations.MovieEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new Screening.Infrastructure.Configurations.MovieEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TheaterEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ScreenEntityTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
@@ -85,6 +92,5 @@ namespace movie_shop_asp.Server.Infrastructure
                 }
             }
         }
-        
     }
 }

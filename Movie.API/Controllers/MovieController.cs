@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Movie.API.Application.Commands;
-using movie_shop_asp.Server.Movie.API.Application.Commands;
 
 namespace Movie.API.Controllers;
 

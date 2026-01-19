@@ -11,6 +11,11 @@ using movie_shop_asp.Server.Application.ExceptionHandler;
 using movie_shop_asp.Server.Infrastructure;
 using Screening.API.Application.IntegrationEventHandler;
 using Screening.Domain.Exceptions;
+using Screening.Infrastructure;
+using Screening.Domain.Aggregate.TheaterAggregate;
+using Screening.Infrastructure.Repositories;
+using Screening.Domain.Aggregate.ScreenAggregate;
+
 
 namespace movie_shop_asp.Server.Extensions
 {
@@ -31,8 +36,9 @@ namespace movie_shop_asp.Server.Extensions
                         b.MigrationsAssembly(typeof(MovieShopContext).Assembly.GetName().Name);
                         b.MigrationsHistoryTable("__EFMigrationsHistory", "public");
                     });
-                });
-
+                })
+                    .AddScoped<IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>())
+                    .AddScoped<IScreeningContext>(provider => provider.GetRequiredService<MovieShopContext>());
 
                 services.AddMediatR(cfg =>
                 {
@@ -52,11 +58,10 @@ namespace movie_shop_asp.Server.Extensions
 
                 services.AddScoped<InProcessIntegrationEventService>();
 
-                services.AddScoped<IMovieRepository, MovieRepository>();
-                services.AddScoped<IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>());
-
+                services.AddScoped<IMovieRepository, Movie.Infrastructure.Repositories.MovieRepository>();
                 services.AddScoped<Screening.Domain.Aggregate.MovieAggregate.IMovieRepository, Screening.Infrastructure.Repositories.MovieRepository>();
-                services.AddScoped<Screening.Infrastructure.IMovieContext>(provider => provider.GetRequiredService<MovieShopContext>());
+                services.AddScoped<ITheaterRepository, TheaterRepository>();
+                services.AddScoped<IScreenRepository, ScreenRepository>();
             }
         }
     }

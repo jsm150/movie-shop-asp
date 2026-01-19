@@ -4,7 +4,7 @@ using MovieEntity = Screening.Domain.Aggregate.MovieAggregate.Movie;
 
 namespace Screening.Infrastructure.Repositories;
 
-public class MovieRepository(IMovieContext context) : IMovieRepository
+public class MovieRepository(IScreeningContext context) : IMovieRepository
 {
     public IUnitOfWork UnitOfWork => context;
 

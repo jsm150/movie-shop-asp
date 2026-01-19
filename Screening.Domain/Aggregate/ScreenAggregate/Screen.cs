@@ -1,12 +1,13 @@
 ﻿using BuildingBlocks.Domain;
+using Screening.Domain.Aggregate.MovieAggregate;
+using Screening.Domain.Aggregate.TheaterAggregate;
 using Screening.Domain.Exceptions;
-
 
 namespace Screening.Domain.Aggregate.ScreenAggregate
 {
     public class Screen : IAggregateRoot
     {
-        private readonly HashSet<string> _reservedSeatCodes = [];
+        private readonly List<SeatHold> _seatHolds = [];
 
         public long ScreenId { get; private set; }
         public long MovieId { get; private set; }
@@ -20,30 +21,23 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
 
         public ScreenStatus Status { get; private set; } = ScreenStatus.SCHEDULED;
 
-        public IReadOnlyCollection<string> ReservedSeatCodes => _reservedSeatCodes;
+        public IReadOnlyCollection<SeatHold> SeatHolds => _seatHolds;
 
         private Screen() { }
 
         public Screen(
-            MovieAggregate.Movie movie,
+            Movie movie,
             DateTimeOffset startTime,
             DateTimeOffset endTime,
             DateTimeOffset salesStartAt,
             DateTimeOffset salesEndAt)
         {
             if (endTime <= startTime)
-            {
                 throw new ScreeningDomainException("EndTime은 StartTime 이후여야 합니다.");
-            }
             if (salesEndAt <= salesStartAt)
-            {
                 throw new ScreeningDomainException("SalesEndAt은 SalesStartAt 이후여야 합니다.");
-            }
             if (!movie.CanBeScreened())
-            {
                 throw new ScreeningDomainException("상영 가능한 상태의 영화가 아닙니다.");
-            }
-
 
             MovieId = movie.MovieId;
             StartTime = startTime;
@@ -52,70 +46,48 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
             SalesEndAt = salesEndAt;
         }
 
-        public void OpenSales()
+        public bool IsPublished() => Status != ScreenStatus.SCHEDULED && Status != ScreenStatus.CANCELED;
+
+        public void HoldSeats(Theater theater, IReadOnlyCollection<string> seatCodes, Guid holdToken, DateTimeOffset heldUntil, DateTimeOffset now)
         {
-            if (Status != ScreenStatus.SCHEDULED)
-                throw new ScreeningDomainException("SCHEDULED 상태에서만 예매 오픈이 가능합니다.");
+            ArgumentNullException.ThrowIfNull(theater);
 
-            Status = ScreenStatus.ON_SALE;
-        }
-
-        public void CloseSales()
-        {
-            if (Status != ScreenStatus.ON_SALE)
-                throw new ScreeningDomainException("ON_SALE 상태에서만 예매 마감이 가능합니다.");
-
-            Status = ScreenStatus.SALES_CLOSED;
-        }
-
-        public void Cancel(string reason)
-        {
-            if (string.IsNullOrWhiteSpace(reason))
-                throw new ScreeningDomainException("취소 사유는 필수입니다.");
-            if (Status == ScreenStatus.ENDED)
-                throw new ScreeningDomainException("상영 종료된 건은 취소할 수 없습니다.");
-
-            Status = ScreenStatus.CANCELED;
-        }
-
-        public void End()
-        {
-            if (Status == ScreenStatus.CANCELED)
-                throw new ScreeningDomainException("취소된 상영은 종료 처리할 수 없습니다.");
-
-            Status = ScreenStatus.ENDED;
-        }
-
-        public void ReserveSeats(IReadOnlyCollection<string> seatCodes, DateTimeOffset now)
-        {
             EnsureSaleable(now);
 
-            if (seatCodes == null || seatCodes.Count == 0)
-                throw new ScreeningDomainException("예약할 좌석이 없습니다.");
+            if (theater.TheaterId != TheaterId)
+                throw new ScreeningDomainException("상영관 정보가 일치하지 않습니다.");
 
-            foreach (var seatCode in seatCodes)
+            if (heldUntil <= now)
+                throw new ScreeningDomainException("HeldUntil은 현재 시간 이후여야 합니다.");
+
+            var normalized = theater.NormalizeAndValidateSeatCodes(seatCodes);
+
+            foreach (var seatCode in normalized)
             {
-                if (string.IsNullOrWhiteSpace(seatCode))
-                    throw new ScreeningDomainException("좌석 코드는 비어 있을 수 없습니다.");
+                var alreadyActive = _seatHolds.Any(h => h.SeatCode == seatCode && h.IsActiveAt(now));
+                if (alreadyActive)
+                    throw new ScreeningDomainException($"이미 점유/예약된 좌석입니다. seatCode={seatCode}");
 
-                if (!_reservedSeatCodes.Add(seatCode))
-                    throw new ScreeningDomainException($"이미 예약된 좌석입니다. seatCode={seatCode}");
+                _seatHolds.Add(new SeatHold(ScreenId, seatCode, holdToken, heldUntil));
             }
         }
 
-        public void ReleaseSeats(IReadOnlyCollection<string> seatCodes)
+        public void ConfirmSeats(Guid holdToken, DateTimeOffset now)
         {
-            if (seatCodes == null || seatCodes.Count == 0)
-                throw new ScreeningDomainException("해제할 좌석이 없습니다.");
+            var holds = _seatHolds.Where(h => h.HoldToken == holdToken).ToList();
+            if (holds.Count == 0)
+                throw new ScreeningDomainException("확정할 점유가 없습니다.");
 
-            foreach (var seatCode in seatCodes)
-            {
-                if (string.IsNullOrWhiteSpace(seatCode))
-                    throw new ScreeningDomainException("좌석 코드는 비어 있을 수 없습니다.");
+            foreach (var hold in holds)
+                hold.Confirm(now);
+        }
 
-                if (!_reservedSeatCodes.Remove(seatCode))
-                    throw new ScreeningDomainException($"예약되지 않은 좌석은 해제할 수 없습니다. seatCode={seatCode}");
-            }
+        public void ReleaseSeats(Guid holdToken)
+        {
+            var holds = _seatHolds.Where(h => h.HoldToken == holdToken).ToList();
+
+            foreach (var hold in holds)
+                hold.Release();
         }
 
         private void EnsureSaleable(DateTimeOffset now)

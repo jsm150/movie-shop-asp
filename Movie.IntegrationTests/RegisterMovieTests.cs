@@ -2,10 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
-using Movie.Infrastructure;
 using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;
-using movie_shop_asp.Server.Movie.API.Application.Commands;
 using System.Net;
 using System.Net.Http.Json;
 
