@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Movie.Domain.Aggregate;
-using Movie.Infrastructure.Configurations;
 
 
-namespace Movie.Infrastructure.Configurations;
+namespace Movie.API.Infrastructure.Configurations;
 
 public class MovieEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Aggregate.Movie>
 {

@@ -1,5 +1,5 @@
 using MediatR;
-using Movie.Domain.Aggregate;
+using Movie.API.Infrastructure;
 using Movie.Domain.Exceptions;
 using Movie.IntegrationEvent;
 using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
@@ -7,14 +7,14 @@ using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
 namespace Movie.API.Application.Commands;
 
 public class ChangeMovieStatusCommandHandler(
-    IMovieRepository movieRepository, 
+    IMovieContext context, 
     IMediator mediator
 ) 
     : IRequestHandler<ChangeMovieStatusCommand, bool>
 {
     public async Task<bool> Handle(ChangeMovieStatusCommand request, CancellationToken cancellationToken)
     {
-        var movie = await movieRepository.GetAsync(request.MovieId)
+        var movie = await context.Movies.FindAsync(request.MovieId)
             ?? throw new MovieDomainException("대상 영화를 찾을 수 없습니다.");
 
         if (movie.MovieStatus == request.Status)
@@ -40,8 +40,8 @@ public class ChangeMovieStatusCommandHandler(
             default:
                 throw new MovieDomainException("지원하지 않는 상태 변경입니다.");
         }
-
-        await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+        
+        await context.SaveEntitiesAsync(cancellationToken);
 
         var integrationEvent = new MovieStatusChangedIntegrationEvent(
             movie.MovieId,

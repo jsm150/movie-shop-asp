@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Movie.Infrastructure;
-using Movie.Infrastructure.Configurations;
-using Screening.Infrastructure.Configurations;
-using Screening.Infrastructure;
 using System.Data;
 
 using MovieEntity = Movie.Domain.Aggregate.Movie;
 using Screening.Domain.Aggregate.ScreenAggregate;
-
+using Movie.API.Infrastructure.Extensions;
+using Movie.API.Infrastructure;
+using Screening.API.Infrastructure;
+using Screening.API.Infrastructure.Extensions;
 
 namespace movie_shop_asp.Server.Infrastructure
 {
@@ -30,16 +29,13 @@ namespace movie_shop_asp.Server.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new Movie.Infrastructure.Configurations.MovieEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new Screening.Infrastructure.Configurations.MovieEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new TheaterEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ScreenEntityTypeConfiguration());
+            modelBuilder.ApplyMovieModuleConfigurations();
+            modelBuilder.ApplyScreeningModuleConfigurations();
         }
 
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        public async Task SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
-            _ = await base.SaveChangesAsync(cancellationToken);
-            return true;
+            await base.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IDbContextTransaction?> BeginTransactionAsync()

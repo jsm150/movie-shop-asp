@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieEntity = Screening.Domain.Aggregate.MovieAggregate.Movie;
 
-namespace Screening.Infrastructure.Configurations;
+namespace Screening.API.Infrastructure.Configurations;
 
 public class MovieEntityTypeConfiguration : IEntityTypeConfiguration<MovieEntity>
 {

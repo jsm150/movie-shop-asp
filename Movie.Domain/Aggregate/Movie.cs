@@ -3,7 +3,7 @@ using Movie.Domain.Exceptions;
 
 namespace Movie.Domain.Aggregate;
 
-public class Movie : Entity, IAggregateRoot
+public class Movie : Entity
 {
     private MovieInfo _movieInfo = null!;
     public long MovieId { get; private set; }

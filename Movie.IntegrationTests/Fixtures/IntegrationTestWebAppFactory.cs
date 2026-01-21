@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Movie.Infrastructure;
 using movie_shop_asp.Server.Infrastructure;
 
 namespace Movie.IntegrationTests.Fixtures;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Screening.Domain.Aggregate.TheaterAggregate;
 
-public class Theater : IAggregateRoot
+public class Theater
 {
     private readonly List<TheaterSeat> _seats = [];
 

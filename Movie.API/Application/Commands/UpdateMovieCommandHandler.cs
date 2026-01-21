@@ -1,14 +1,15 @@
 using MediatR;
+using Movie.API.Infrastructure;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
 
 namespace Movie.API.Application.Commands;
 
-public class UpdateMovieCommandHandler(IMovieRepository movieRepository) : IRequestHandler<UpdateMovieCommand, bool>
+public class UpdateMovieCommandHandler(IMovieContext context) : IRequestHandler<UpdateMovieCommand, bool>
 {
     public async Task<bool> Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
-        var movie = await movieRepository.GetAsync(request.MovieId) 
+        var movie = await context.Movies.FindAsync(request.MovieId) 
             ?? throw new MovieDomainException("대상 영화를 찾을 수 없습니다.");
 
         var newInfo = new MovieInfo
@@ -31,6 +32,7 @@ public class UpdateMovieCommandHandler(IMovieRepository movieRepository) : IRequ
 
         movie.UpdateMovieInfo(newInfo);
 
-        return await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+        await context.SaveEntitiesAsync(cancellationToken);
+        return true;
     }
 }

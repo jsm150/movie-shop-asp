@@ -1,18 +1,14 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Movie.API.Controllers;
-using Movie.Domain.Aggregate;
+using Movie.API.Infrastructure;
 using Movie.Domain.Exceptions;
-using Movie.Infrastructure;
 using movie_shop_asp.Server.Application.Behaviors;
 using movie_shop_asp.Server.Application.ExceptionHandler;
 using movie_shop_asp.Server.Infrastructure;
 using Screening.API.Application.IntegrationEventHandler;
+using Screening.API.Infrastructure;
 using Screening.Domain.Exceptions;
-using Screening.Infrastructure;
-using Screening.Domain.Aggregate.TheaterAggregate;
-using Screening.Infrastructure.Repositories;
-using Screening.Domain.Aggregate.ScreenAggregate;
 
 
 namespace movie_shop_asp.Server.Extensions
@@ -53,11 +49,6 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddExceptionHandler<ValidateExceptionHandler>();
                 services.AddExceptionHandler<DomainExceptionHandler<MovieDomainException>>();
                 services.AddExceptionHandler<DomainExceptionHandler<ScreeningDomainException>>();
-
-                services.AddScoped<IMovieRepository, Movie.Infrastructure.Repositories.MovieRepository>();
-                services.AddScoped<Screening.Domain.Aggregate.MovieAggregate.IMovieRepository, Screening.Infrastructure.Repositories.MovieRepository>();
-                services.AddScoped<ITheaterRepository, TheaterRepository>();
-                services.AddScoped<IScreenRepository, ScreenRepository>();
             }
         }
     }

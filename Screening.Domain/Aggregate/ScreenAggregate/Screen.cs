@@ -5,7 +5,7 @@ using Screening.Domain.Exceptions;
 
 namespace Screening.Domain.Aggregate.ScreenAggregate
 {
-    public class Screen : IAggregateRoot
+    public class Screen
     {
         private readonly List<SeatHold> _seatHolds = [];
 

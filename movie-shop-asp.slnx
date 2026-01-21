@@ -1,8 +1,4 @@
 <Solution>
-  <Folder Name="/docs/">
-    <File Path="docs/rules.md" />
-    <File Path="docs/structure.md" />
-  </Folder>
   <Folder Name="/src/">
     <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
     <Project Path="movie-shop-asp.Server/Host.csproj" />
@@ -10,13 +6,11 @@
   <Folder Name="/src/Movie/">
     <Project Path="Movie.API/Movie.API.csproj" Id="de913498-c020-4073-940f-866ac6a4dde4" />
     <Project Path="Movie.Domain/Movie.Domain.csproj" />
-    <Project Path="Movie.Infrastructure/Movie.Infrastructure.csproj" />
     <Project Path="Movie.IntegrationEvent/Movie.IntegrationEvent.csproj" Id="4a69e478-9855-4b7f-b99e-c12138d7c897" />
   </Folder>
   <Folder Name="/src/Screening/">
     <Project Path="Screening.API/Screening.API.csproj" />
     <Project Path="Screening.Domain/Screening.Domain.csproj" Id="69882717-1c84-4b5d-b2f6-9bbc702d8594" />
-    <Project Path="Screening.Infrastructure/Screening.Infrastructure.csproj" Id="ffdc6d40-166e-4ff1-be10-4ee19dc2d67b" />
   </Folder>
   <Folder Name="/src/Theater/">
     <Project Path="Theater.IntegrationEvent/Theater.IntegrationEvent.csproj" Id="a2db3943-f2ef-487a-85c3-fe422179f748" />

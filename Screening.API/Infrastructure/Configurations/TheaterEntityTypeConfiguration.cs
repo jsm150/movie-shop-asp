@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Screening.Domain.Aggregate.ScreenAggregate;
 using Screening.Domain.Aggregate.TheaterAggregate;
+using TheaterEntity = Screening.Domain.Aggregate.TheaterAggregate.Theater;
 
-namespace Screening.Infrastructure.Configurations;
+namespace Screening.API.Infrastructure.Configurations;
 
-public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<Theater>
+public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<TheaterEntity>
 {
-    public void Configure(EntityTypeBuilder<Theater> builder)
+    public void Configure(EntityTypeBuilder<TheaterEntity> builder)
     {
         builder.ToTable("Theaters", "Screening");
 

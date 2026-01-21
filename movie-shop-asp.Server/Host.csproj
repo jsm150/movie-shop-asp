@@ -36,10 +36,8 @@
     </ProjectReference>
     <ProjectReference Include="..\Movie.API\Movie.API.csproj" />
     <ProjectReference Include="..\Movie.Domain\Movie.Domain.csproj" />
-    <ProjectReference Include="..\Movie.Infrastructure\Movie.Infrastructure.csproj" />
     <ProjectReference Include="..\Screening.API\Screening.API.csproj" />
     <ProjectReference Include="..\Screening.Domain\Screening.Domain.csproj" />
-    <ProjectReference Include="..\Screening.Infrastructure\Screening.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
