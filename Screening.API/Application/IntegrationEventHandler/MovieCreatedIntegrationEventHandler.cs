@@ -1,6 +1,7 @@
-﻿using IntegrationEvents.Events;
-using MediatR;
+﻿using MediatR;
+using Movie.IntegrationEvent;
 using Screening.Domain.Aggregate.MovieAggregate;
+using MovieEntity = Screening.Domain.Aggregate.MovieAggregate.Movie;
 
 namespace Screening.API.Application.IntegrationEventHandler;
 
@@ -8,15 +9,15 @@ public class MovieCreatedIntegrationEventHandler(IMovieRepository movieRepositor
 {
     public async Task Handle(MovieCreatedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        var movie = new Movie()
+        var movie = new MovieEntity()
         {
             MovieId = @event.MovieId,
             MovieStatus = @event.MovieStatus switch
             {
-                IntegrationEvents.Events.MovieStatus.PREPARING => Domain.Aggregate.MovieAggregate.MovieStatus.PREPARING,
-                IntegrationEvents.Events.MovieStatus.COMMING_SOON => Domain.Aggregate.MovieAggregate.MovieStatus.COMMING_SOON,
-                IntegrationEvents.Events.MovieStatus.NOW_SHOWING => Domain.Aggregate.MovieAggregate.MovieStatus.NOW_SHOWING,
-                IntegrationEvents.Events.MovieStatus.ENDED => Domain.Aggregate.MovieAggregate.MovieStatus.ENDED,
+                Movie.IntegrationEvent.MovieStatus.PREPARING => Domain.Aggregate.MovieAggregate.MovieStatus.PREPARING,
+                Movie.IntegrationEvent.MovieStatus.COMMING_SOON => Domain.Aggregate.MovieAggregate.MovieStatus.COMMING_SOON,
+                Movie.IntegrationEvent.MovieStatus.NOW_SHOWING => Domain.Aggregate.MovieAggregate.MovieStatus.NOW_SHOWING,
+                Movie.IntegrationEvent.MovieStatus.ENDED => Domain.Aggregate.MovieAggregate.MovieStatus.ENDED,
                 _ => throw new NotImplementedException(),
             }
         };

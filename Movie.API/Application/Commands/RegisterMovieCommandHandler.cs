@@ -1,13 +1,15 @@
-﻿using IntegrationEvents;
-using IntegrationEvents.Events;
-using MediatR;
+﻿using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
+using Movie.IntegrationEvent;
 using MovieEntity = Movie.Domain.Aggregate.Movie;
 
 namespace Movie.API.Application.Commands;
 
-public class RegisterMovieCommandHandler(IMovieRepository movieRepository, InProcessIntegrationEventService integrationEventService) 
+public class RegisterMovieCommandHandler(
+    IMovieRepository movieRepository, 
+    IMediator mediator
+) 
     : IRequestHandler<RegisterMovieCommand, bool>
 {
 
@@ -47,15 +49,15 @@ public class RegisterMovieCommandHandler(IMovieRepository movieRepository, InPro
             MovieId = movie.MovieId,
             MovieStatus = movie.MovieStatus switch
             {
-                Domain.Aggregate.MovieStatus.PREPARING => IntegrationEvents.Events.MovieStatus.PREPARING,
-                Domain.Aggregate.MovieStatus.COMMING_SOON => IntegrationEvents.Events.MovieStatus.COMMING_SOON,
-                Domain.Aggregate.MovieStatus.NOW_SHOWING => IntegrationEvents.Events.MovieStatus.NOW_SHOWING,
-                Domain.Aggregate.MovieStatus.ENDED => IntegrationEvents.Events.MovieStatus.ENDED,
+                Domain.Aggregate.MovieStatus.PREPARING => IntegrationEvent.MovieStatus.PREPARING,
+                Domain.Aggregate.MovieStatus.COMMING_SOON => IntegrationEvent.MovieStatus.COMMING_SOON,
+                Domain.Aggregate.MovieStatus.NOW_SHOWING => IntegrationEvent.MovieStatus.NOW_SHOWING,
+                Domain.Aggregate.MovieStatus.ENDED => IntegrationEvent.MovieStatus.ENDED,
                 _ => throw new NotImplementedException(),
             }
         };
 
-        integrationEventService.Add(integrationEvent);
+        await mediator.Publish(integrationEvent, cancellationToken);
 
         return true;
     }

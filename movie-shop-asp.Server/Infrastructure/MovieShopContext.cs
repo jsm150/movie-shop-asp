@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using Movie.Infrastructure;
 using Movie.Infrastructure.Configurations;
-using Screening.Domain.Aggregate.TheaterAggregate;
 using Screening.Infrastructure.Configurations;
 using Screening.Infrastructure;
 using System.Data;
@@ -21,7 +20,7 @@ namespace movie_shop_asp.Server.Infrastructure
         public DbSet<MovieEntity> Movies { get; set; }
         public DbSet<Screening.Domain.Aggregate.MovieAggregate.Movie> ScreeningMovies { get; set; }
 
-        public DbSet<Theater> Theaters { get; set; }
+        public DbSet<Screening.Domain.Aggregate.TheaterAggregate.Theater> Theaters { get; set; }
 
         public DbSet<Screen> Screens { get; set; }
 

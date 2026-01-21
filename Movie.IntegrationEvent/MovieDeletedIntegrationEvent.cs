@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IntegrationEvents.Events;
+namespace Movie.IntegrationEvent;
 
 public record MovieDeletedIntegrationEvent : INotification
 {

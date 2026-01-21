@@ -1,13 +1,16 @@
-using IntegrationEvents;
-using IntegrationEvents.Events;
 using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
+using Movie.IntegrationEvent;
 using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
 
 namespace Movie.API.Application.Commands;
 
-public class ChangeMovieStatusCommandHandler(IMovieRepository movieRepository, InProcessIntegrationEventService integrationEventService) : IRequestHandler<ChangeMovieStatusCommand, bool>
+public class ChangeMovieStatusCommandHandler(
+    IMovieRepository movieRepository, 
+    IMediator mediator
+) 
+    : IRequestHandler<ChangeMovieStatusCommand, bool>
 {
     public async Task<bool> Handle(ChangeMovieStatusCommand request, CancellationToken cancellationToken)
     {
@@ -44,15 +47,15 @@ public class ChangeMovieStatusCommandHandler(IMovieRepository movieRepository, I
             movie.MovieId,
             movie.MovieStatus switch
             {
-                MovieStatus.PREPARING => IntegrationEvents.Events.MovieStatus.PREPARING,
-                MovieStatus.COMMING_SOON => IntegrationEvents.Events.MovieStatus.COMMING_SOON,
-                MovieStatus.NOW_SHOWING => IntegrationEvents.Events.MovieStatus.NOW_SHOWING,
-                MovieStatus.ENDED => IntegrationEvents.Events.MovieStatus.ENDED,
+                MovieStatus.PREPARING => IntegrationEvent.MovieStatus.PREPARING,
+                MovieStatus.COMMING_SOON => IntegrationEvent.MovieStatus.COMMING_SOON,
+                MovieStatus.NOW_SHOWING => IntegrationEvent.MovieStatus.NOW_SHOWING,
+                MovieStatus.ENDED => IntegrationEvent.MovieStatus.ENDED,
                 _ => throw new NotImplementedException(),
             }
         );
 
-        integrationEventService.Add(integrationEvent);
+        await mediator.Publish(integrationEvent, cancellationToken);
 
         return true;
     }

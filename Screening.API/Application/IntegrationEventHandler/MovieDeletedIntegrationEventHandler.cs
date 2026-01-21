@@ -1,9 +1,7 @@
-﻿using IntegrationEvents.Events;
-using MediatR;
+﻿using MediatR;
+using Movie.IntegrationEvent;
 using Screening.Domain.Aggregate.MovieAggregate;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MovieEntity = Screening.Domain.Aggregate.MovieAggregate.Movie;
 
 namespace Screening.API.Application.IntegrationEventHandler;
 
@@ -11,7 +9,7 @@ public class MovieDeletedIntegrationEventHandler(IMovieRepository movieRepositor
 {
     public async Task Handle(MovieDeletedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        Movie movie = (await movieRepository.GetAsync(@event.MovieId))!;
+        MovieEntity movie = (await movieRepository.GetAsync(@event.MovieId))!;
         movieRepository.Remove(movie);
         await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }

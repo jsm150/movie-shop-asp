@@ -1,12 +1,15 @@
-using IntegrationEvents;
-using IntegrationEvents.Events;
 using MediatR;
 using Movie.Domain.Aggregate;
 using Movie.Domain.Exceptions;
+using Movie.IntegrationEvent;
 
 namespace Movie.API.Application.Commands;
 
-public class DeleteMovieCommandHandler(IMovieRepository movieRepository, InProcessIntegrationEventService integrationEventService) : IRequestHandler<DeleteMovieCommand, bool>
+public class DeleteMovieCommandHandler(
+    IMovieRepository movieRepository, 
+    IMediator mediator
+) 
+    : IRequestHandler<DeleteMovieCommand, bool>
 {
     public async Task<bool> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
     {
@@ -26,7 +29,7 @@ public class DeleteMovieCommandHandler(IMovieRepository movieRepository, InProce
             MovieId = request.MovieId
         };
 
-        integrationEventService.Add(integrationEvent);
+        await mediator.Publish(integrationEvent, cancellationToken);
 
         return true;
     }

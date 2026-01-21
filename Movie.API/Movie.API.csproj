@@ -12,8 +12,8 @@
       <PackageReference Include="MediatR" Version="14.0.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
       <ProjectReference Include="..\Movie.Domain\Movie.Domain.csproj" />
+      <ProjectReference Include="..\Movie.IntegrationEvent\Movie.IntegrationEvent.csproj" />
     </ItemGroup>
 
 </Project>

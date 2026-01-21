@@ -1,5 +1,5 @@
 ﻿using MediatR;
-namespace IntegrationEvents.Events;
+namespace Movie.IntegrationEvent;
 
 public record MovieCreatedIntegrationEvent : INotification
 {
