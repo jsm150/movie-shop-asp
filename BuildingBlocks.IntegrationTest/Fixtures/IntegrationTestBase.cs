@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using movie_shop_asp.Server.Infrastructure;
 using Respawn;
 using System.Net.Http.Json;
+using Xunit;
 
-namespace Movie.IntegrationTests.Fixtures;
+namespace BuildingBlocks.IntegrationTest.Fixtures;
 
 public abstract class IntegrationTestBase : IAsyncLifetime
 {

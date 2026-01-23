@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using movie_shop_asp.Server.Infrastructure;
+using Xunit;
 
-namespace Movie.IntegrationTests.Fixtures;
+
+namespace BuildingBlocks.IntegrationTest.Fixtures;
 
 public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

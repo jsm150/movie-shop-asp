@@ -1,6 +1,7 @@
 using Testcontainers.PostgreSql;
+using Xunit;
 
-namespace Movie.IntegrationTests.Fixtures;
+namespace BuildingBlocks.IntegrationTest.Fixtures;
 
 public class PostgreSqlFixture : IAsyncLifetime
 {

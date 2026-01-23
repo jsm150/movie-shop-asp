@@ -16,7 +16,9 @@
     <Project Path="Theater.IntegrationEvent/Theater.IntegrationEvent.csproj" Id="a2db3943-f2ef-487a-85c3-fe422179f748" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="BuildingBlocks.IntegrationTest/BuildingBlocks.IntegrationTest.csproj" Id="12c9f427-2ff5-441d-a1c8-6bbedc14bba5" />
     <Project Path="Movie.IntegrationTests/Movie.IntegrationTests.csproj" Id="88b12497-93b4-409f-ad00-cb522124d7a3" />
+    <Project Path="Screening.IntegrationTests/Screening.IntegrationTests.csproj" />
     <Project Path="Screening.UnitTests/Screening.UnitTests.csproj" />
   </Folder>
   <Project Path="movie-shop-asp.client/movie-shop-asp.client.esproj">

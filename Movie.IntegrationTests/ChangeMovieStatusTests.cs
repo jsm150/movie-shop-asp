@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
+using BuildingBlocks.IntegrationTest.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using Movie.API.Application.Commands;
 using Movie.Domain.Aggregate;
-using Movie.IntegrationTests.Fixtures;
 using movie_shop_asp.Server.Infrastructure;
 using MovieStatus = Movie.Domain.Aggregate.MovieStatus;
 using ScreeningMovieStatus = Screening.Domain.Aggregate.MovieAggregate.MovieStatus;

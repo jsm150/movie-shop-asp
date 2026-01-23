@@ -1,5 +1,7 @@
 using movie_shop_asp.Server.Extensions;
+using Movie.API.Controllers;
 using Scalar.AspNetCore;
+using Screening.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddApplicationServices();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(MovieController).Assembly)
+    .AddApplicationPart(typeof(ScreenController).Assembly);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

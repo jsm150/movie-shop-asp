@@ -9,6 +9,13 @@ public class ScreenEntityTypeConfiguration : IEntityTypeConfiguration<Screen>
 {
     public void Configure(EntityTypeBuilder<Screen> builder)
     {
+        // StartTime 과 EndTime의 범위가 겹치는 것을 방지하기 위해서
+        // Db에 유니크 인덱스를 생성했습니다.
+        // EntityTypeBuilder의 Api가 없어서,
+        // 마이그레이션 파일에 직접 Sql 코드를 작성했습니다.
+        // 20260123131930_AddScreeningOverlapConstraint 파일을 참고하세요.
+
+
         builder.ToTable("Screens", "Screening");
 
         builder.HasKey(x => x.ScreenId);

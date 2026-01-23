@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.IntegrationTest\BuildingBlocks.IntegrationTest.csproj" />
     <ProjectReference Include="..\movie-shop-asp.Server\Host.csproj" />
   </ItemGroup>
 

@@ -6,7 +6,7 @@ using Movie.Domain.Exceptions;
 using movie_shop_asp.Server.Application.Behaviors;
 using movie_shop_asp.Server.Application.ExceptionHandler;
 using movie_shop_asp.Server.Infrastructure;
-using Screening.API.Application.IntegrationEventHandler;
+using Screening.API.Controllers;
 using Screening.API.Infrastructure;
 using Screening.Domain.Exceptions;
 
@@ -38,7 +38,7 @@ namespace movie_shop_asp.Server.Extensions
                 {
                     cfg.RegisterServicesFromAssemblyContaining<Program>();
                     cfg.RegisterServicesFromAssemblyContaining<MovieController>(); // Movie
-                    cfg.RegisterServicesFromAssemblyContaining<MovieCreatedIntegrationEventHandler>(); // Screening
+                    cfg.RegisterServicesFromAssemblyContaining<ScreenController>(); // Screening
 
                     cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
                     cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
