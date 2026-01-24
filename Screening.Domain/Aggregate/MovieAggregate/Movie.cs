@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Screening.Domain.Aggregate.MovieAggregate;
 
-public class Movie
+public class Movie : IAggregateRoot
 {
     public long MovieId { get; init; }
     public MovieStatus MovieStatus { get; set; }

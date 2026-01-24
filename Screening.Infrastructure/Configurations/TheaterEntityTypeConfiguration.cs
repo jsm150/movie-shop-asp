@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Screening.Domain.Aggregate.TheaterAggregate;
 using TheaterEntity = Screening.Domain.Aggregate.TheaterAggregate.Theater;
 
-namespace Screening.API.Infrastructure.Configurations;
+namespace Screening.Infrastructure.Configurations;
 
 public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<TheaterEntity>
 {

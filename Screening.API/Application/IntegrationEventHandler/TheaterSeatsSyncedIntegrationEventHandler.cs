@@ -1,13 +1,17 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Screening.API.Infrastructure;
+using Screening.Domain.Aggregate.ScreenAggregate;
 using Screening.Domain.Aggregate.TheaterAggregate;
 using Theater.IntegrationEvent;
 using TheaterEntity = Screening.Domain.Aggregate.TheaterAggregate.Theater;
 
 namespace Screening.API.Application.IntegrationEventHandler;
 
-public class TheaterSeatsSyncedIntegrationEventHandler(IScreeningContext context)
+public class TheaterSeatsSyncedIntegrationEventHandler
+(
+    IScreenRepository screenRepository,
+    ITheaterRepository theaterRepository
+)
     : INotificationHandler<TheaterSeatsSyncedIntegrationEvent>
 {
     public async Task Handle(TheaterSeatsSyncedIntegrationEvent @event, CancellationToken cancellationToken)
@@ -18,18 +22,18 @@ public class TheaterSeatsSyncedIntegrationEventHandler(IScreeningContext context
             .Distinct()
             .ToArray();
 
-        var theater = await context.Theaters.FindAsync(@event.TheaterId);
+        var theater = await theaterRepository.FindAsync(@event.TheaterId);
         if (theater is null)
         {
             theater = new TheaterEntity(@event.TheaterId, seatCodes);
-            context.Theaters.Add(theater);
+            theaterRepository.Add(theater);
         }
         else
         {
-            var screen = await context.Screens.FirstOrDefaultAsync(s => s.TheaterId == theater.TheaterId);
+            var screen = await screenRepository.FindByTheaterId(theater.TheaterId);
             theater.ReplaceSeats(seatCodes, screen);
         }
 
-        await context.SaveEntitiesAsync(cancellationToken);
+        await theaterRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

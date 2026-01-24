@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Movie.IntegrationEvent;
-using Screening.API.Infrastructure;
 using Screening.Domain.Aggregate.MovieAggregate;
+using Screening.Domain.Aggregate.ScreenAggregate;
 using MovieEntity = Screening.Domain.Aggregate.MovieAggregate.Movie;
 
 namespace Screening.API.Application.IntegrationEventHandler;
 
-public class MovieCreatedIntegrationEventHandler(IScreeningContext context) : INotificationHandler<MovieCreatedIntegrationEvent>
+public class MovieCreatedIntegrationEventHandler(IScreeningMovieRepository movieRepository) : INotificationHandler<MovieCreatedIntegrationEvent>
 {
     public async Task Handle(MovieCreatedIntegrationEvent @event, CancellationToken cancellationToken)
     {
@@ -23,7 +23,7 @@ public class MovieCreatedIntegrationEventHandler(IScreeningContext context) : IN
             }
         };
 
-        context.ScreeningMovies.Add(movie);
-        await context.SaveEntitiesAsync(cancellationToken);
+        movieRepository.Add(movie);
+        await movieRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

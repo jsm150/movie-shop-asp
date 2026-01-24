@@ -1,12 +1,18 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Screening.API.Infrastructure;
+using Screening.Domain.Aggregate.MovieAggregate;
 using Screening.Domain.Aggregate.ScreenAggregate;
+using Screening.Domain.Aggregate.TheaterAggregate;
 using Screening.Domain.Exceptions;
 
 namespace Screening.API.Application.Commands;
 
-public class CreateScreenCommandHandler(IScreeningContext context)
+public class CreateScreenCommandHandler
+(
+    IScreeningMovieRepository movieRepository,
+    ITheaterRepository theaterRepository,
+    IScreenRepository screenRepository
+)
     : IRequestHandler<CreateScreenCommand, long>
 {
     public async Task<long> Handle(CreateScreenCommand request, CancellationToken cancellationToken)
@@ -36,8 +42,8 @@ public class CreateScreenCommandHandler(IScreeningContext context)
             TheaterId = theater.TheaterId
         };
 
-        context.Screens.Add(screen);
-        await context.SaveEntitiesAsync(cancellationToken);
+        screenRepository.Add(screen);
+        await screenRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return screen.ScreenId;
     }

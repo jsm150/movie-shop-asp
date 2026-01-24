@@ -7,8 +7,12 @@ using movie_shop_asp.Server.Application.Behaviors;
 using movie_shop_asp.Server.Application.ExceptionHandler;
 using movie_shop_asp.Server.Infrastructure;
 using Screening.API.Controllers;
-using Screening.API.Infrastructure;
+using Screening.Domain.Aggregate.MovieAggregate;
+using Screening.Domain.Aggregate.ScreenAggregate;
+using Screening.Domain.Aggregate.TheaterAggregate;
 using Screening.Domain.Exceptions;
+using Screening.Infrastructure;
+using Screening.Infrastructure.Repository;
 
 
 namespace movie_shop_asp.Server.Extensions
@@ -49,6 +53,10 @@ namespace movie_shop_asp.Server.Extensions
                 services.AddExceptionHandler<ValidateExceptionHandler>();
                 services.AddExceptionHandler<DomainExceptionHandler<MovieDomainException>>();
                 services.AddExceptionHandler<DomainExceptionHandler<ScreeningDomainException>>();
+
+                services.AddScoped<IScreenRepository, ScreenRepository>();
+                services.AddScoped<IScreeningMovieRepository, ScreeningMovieRepository>();
+                services.AddScoped<ITheaterRepository, TheaterRepository>();
             }
         }
     }

@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Screening.API.Infrastructure.Configurations;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Screening.Infrastructure.Configurations;
 
-namespace Screening.API.Infrastructure.Extensions;
+
+namespace Screening.Infrastructure.Extensions;
 
 public static class ModelBuilderExtention
 {
