@@ -7,17 +7,11 @@ using Xunit;
 
 namespace BuildingBlocks.IntegrationTest.Fixtures;
 
-public abstract class IntegrationTestBase : IAsyncLifetime
+public abstract class IntegrationTestBase(IntegrationTestWebAppFactory factory) : IAsyncLifetime
 {
-    protected readonly IntegrationTestWebAppFactory Factory;
-    protected readonly HttpClient Client;
+    protected readonly IntegrationTestWebAppFactory Factory = factory;
+    protected readonly HttpClient Client = factory.CreateClient();
     private Respawner? _respawner;
-
-    protected IntegrationTestBase(IntegrationTestWebAppFactory factory)
-    {
-        Factory = factory;
-        Client = factory.CreateClient();
-    }
 
     public async Task InitializeAsync()
     {
