@@ -14,4 +14,14 @@ public class ScreenController(IMediator mediator) : Controller
         var screenId = await mediator.Send(command, cancellationToken);
         return Ok(screenId);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<bool>> Update(long id, UpdateScreenCommand command, CancellationToken cancellationToken)
+    {
+        if (id != command.ScreenId)
+            return BadRequest("경로의 ID와 요청 본문의 ScreenId가 일치하지 않습니다.");
+
+        var result = await mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
 }

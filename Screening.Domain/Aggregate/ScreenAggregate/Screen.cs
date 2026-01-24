@@ -11,7 +11,7 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
 
         public long ScreenId { get; private set; }
         public long MovieId { get; private set; }
-        public long TheaterId { get; init; }
+        public long TheaterId { get; private set; }
 
         public DateTimeOffset StartTime { get; private set; }
         public DateTimeOffset EndTime { get; private set; }
@@ -25,8 +25,10 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
 
         private Screen() { }
 
-        public Screen(
+        public static async Task<Screen> CreateAsync(
             Movie movie,
+            long theaterId,
+            IScreenRepository repository,
             DateTimeOffset startTime,
             DateTimeOffset endTime,
             DateTimeOffset salesStartAt,
@@ -38,8 +40,39 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
                 throw new ScreeningDomainException("SalesEndAt은 SalesStartAt 이후여야 합니다.");
             if (!movie.CanBeScreened())
                 throw new ScreeningDomainException("상영 가능한 상태의 영화가 아닙니다.");
+            if (await repository.HasConflict(theaterId, startTime, endTime))
+                throw new ScreeningDomainException("요청 시간에 해당 상영관의 상영이 이미 예약되어 있습니다.");
 
-            MovieId = movie.MovieId;
+            return new Screen
+            {
+                MovieId = movie.MovieId,
+                TheaterId = theaterId,
+                StartTime = startTime,
+                EndTime = endTime,
+                SalesStartAt = salesStartAt,
+                SalesEndAt = salesEndAt
+            };
+        }
+
+        public async Task UpdateAsync(
+            DateTimeOffset startTime,
+            DateTimeOffset endTime,
+            IScreenRepository repository,
+            DateTimeOffset salesStartAt,
+            DateTimeOffset salesEndAt)
+        {
+            if (Status != ScreenStatus.SCHEDULED)
+                throw new ScreeningDomainException("예정 상태의 상영만 수정할 수 있습니다.");
+
+            if (endTime <= startTime)
+                throw new ScreeningDomainException("EndTime은 StartTime 이후여야 합니다.");
+
+            if (salesEndAt <= salesStartAt)
+                throw new ScreeningDomainException("SalesEndAt은 SalesStartAt 이후여야 합니다.");
+
+            if (await repository.HasConflict(TheaterId, startTime, endTime))
+                throw new ScreeningDomainException("요청 시간에 해당 상영관의 상영이 이미 예약되어 있습니다.");
+
             StartTime = startTime;
             EndTime = endTime;
             SalesStartAt = salesStartAt;

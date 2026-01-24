@@ -1,4 +1,5 @@
 using FluentAssertions;
+using NSubstitute;
 using Screening.Domain.Aggregate.MovieAggregate;
 using Screening.Domain.Aggregate.ScreenAggregate;
 using Screening.Domain.Aggregate.TheaterAggregate;
@@ -8,42 +9,77 @@ namespace Screening.UnitTests.Domain.ScreenAggregate;
 
 public class ScreenTests
 {
+    private readonly IScreenRepository _repository;
+
+    public ScreenTests()
+    {
+        _repository = Substitute.For<IScreenRepository>();
+        _repository.HasConflict(Arg.Any<long>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>())
+            .Returns(false);
+    }
+
     [Fact]
-    public void Ctor_WhenEndTimeBeforeStartTime_ShouldThrow()
+    public async Task CreateAsync_WhenEndTimeBeforeStartTime_ShouldThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
 
-        var act = () => _ = new Screen(
+        var act = () => Screen.CreateAsync(
             movie,
+            theaterId: 1,
+            _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 9, 0, 0, TimeSpan.Zero),
             salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
             salesEndAt: new DateTimeOffset(2026, 1, 1, 9, 30, 0, TimeSpan.Zero));
 
-        act.Should().Throw<ScreeningDomainException>();
+        await act.Should().ThrowAsync<ScreeningDomainException>();
     }
 
     [Fact]
-    public void Ctor_WhenMovieCannotBeScreened_ShouldThrow()
+    public async Task CreateAsync_WhenMovieCannotBeScreened_ShouldThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.PREPARING };
 
-        var act = () => _ = new Screen(
+        var act = () => Screen.CreateAsync(
             movie,
+            theaterId: 1,
+            _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
             salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
             salesEndAt: new DateTimeOffset(2026, 1, 1, 9, 30, 0, TimeSpan.Zero));
 
-        act.Should().Throw<ScreeningDomainException>();
+        await act.Should().ThrowAsync<ScreeningDomainException>();
     }
 
     [Fact]
-    public void HoldSeats_WhenNotOnSale_ShouldThrow()
+    public async Task CreateAsync_WhenScreeningTimeConflicts_ShouldThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
-        var screen = new Screen(
+        var repository = Substitute.For<IScreenRepository>();
+        repository.HasConflict(Arg.Any<long>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>())
+            .Returns(true);
+
+        var act = () => Screen.CreateAsync(
             movie,
+            theaterId: 1,
+            repository,
+            startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
+            endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
+            salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
+            salesEndAt: new DateTimeOffset(2026, 1, 1, 9, 30, 0, TimeSpan.Zero));
+
+        await act.Should().ThrowAsync<ScreeningDomainException>();
+    }
+
+    [Fact]
+    public async Task HoldSeats_WhenNotOnSale_ShouldThrow()
+    {
+        var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
+        var screen = await Screen.CreateAsync(
+            movie,
+            theaterId: 1,
+            _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
             salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
@@ -62,11 +98,13 @@ public class ScreenTests
     }
 
     [Fact]
-    public void ConfirmSeats_WhenTokenNotFound_ShouldThrow()
+    public async Task ConfirmSeats_WhenTokenNotFound_ShouldThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
-        var screen = new Screen(
+        var screen = await Screen.CreateAsync(
             movie,
+            theaterId: 1,
+            _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
             salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
@@ -78,11 +116,13 @@ public class ScreenTests
     }
 
     [Fact]
-    public void ReleaseSeats_WhenNoSeats_ShouldNotThrow()
+    public async Task ReleaseSeats_WhenNoSeats_ShouldNotThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
-        var screen = new Screen(
+        var screen = await Screen.CreateAsync(
             movie,
+            theaterId: 1,
+            _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
             salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),

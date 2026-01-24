@@ -9,9 +9,6 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Movie.IntegrationEvent\Movie.IntegrationEvent.csproj" />
     <ProjectReference Include="..\Screening.Domain\Screening.Domain.csproj" />
     <ProjectReference Include="..\Theater.IntegrationEvent\Theater.IntegrationEvent.csproj" />

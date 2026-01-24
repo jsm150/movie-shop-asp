@@ -14,7 +14,7 @@ using TheaterEntity = Screening.Domain.Aggregate.TheaterAggregate.Theater;
 namespace Screening.IntegrationTests.Commands;
 
 [Collection(nameof(IntegrationTestCollection))]
-public class CreateScreenCommandHandlerTests(IntegrationTestWebAppFactory factory) : IntegrationTestBase(factory)
+public class CreateScreenTests(IntegrationTestWebAppFactory factory) : IntegrationTestBase(factory)
 {
     [Fact]
     public async Task CreateScreen_WithValidData_ReturnsScreenId()

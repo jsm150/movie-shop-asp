@@ -11,6 +11,7 @@
   <Folder Name="/src/Screening/">
     <Project Path="Screening.API/Screening.API.csproj" />
     <Project Path="Screening.Domain/Screening.Domain.csproj" Id="69882717-1c84-4b5d-b2f6-9bbc702d8594" />
+    <Project Path="Screening.Infrastructure/Screening.Infrastructure.csproj" Id="8c8637d9-8a76-45e7-8b91-4c22a33dfece" />
   </Folder>
   <Folder Name="/src/Theater/">
     <Project Path="Theater.IntegrationEvent/Theater.IntegrationEvent.csproj" Id="a2db3943-f2ef-487a-85c3-fe422179f748" />
