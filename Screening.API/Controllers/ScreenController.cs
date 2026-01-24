@@ -24,4 +24,12 @@ public class ScreenController(IMediator mediator) : Controller
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> Delete(long id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteScreenCommand(id);
+        var result = await mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
 }

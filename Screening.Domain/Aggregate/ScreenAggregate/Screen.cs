@@ -79,7 +79,13 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
             SalesEndAt = salesEndAt;
         }
 
-        public bool IsPublished() => Status != ScreenStatus.SCHEDULED && Status != ScreenStatus.CANCELED;
+        public void RemoveValidate()
+        {
+            if (Status != ScreenStatus.SCHEDULED)
+                throw new ScreeningDomainException("예정 상태의 상영만 취소할 수 있습니다.");
+        }
+
+        public bool IsPublished() => Status != ScreenStatus.SCHEDULED;
 
         public void HoldSeats(Theater theater, IReadOnlyCollection<string> seatCodes, Guid holdToken, DateTimeOffset heldUntil, DateTimeOffset now)
         {

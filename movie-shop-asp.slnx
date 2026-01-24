@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
+    <Project Path="BuildingBlocks/BuildingBlocks.Domain.csproj" />
     <Project Path="movie-shop-asp.Server/Host.csproj" />
   </Folder>
   <Folder Name="/src/Movie/">

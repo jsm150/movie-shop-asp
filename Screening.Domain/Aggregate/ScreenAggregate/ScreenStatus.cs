@@ -1,11 +1,9 @@
-namespace Screening.Domain.Aggregate.ScreenAggregate
+namespace Screening.Domain.Aggregate.ScreenAggregate;
+
+public enum ScreenStatus
 {
-    public enum ScreenStatus
-    {
-        SCHEDULED,
-        ON_SALE,
-        SALES_CLOSED,
-        CANCELED,
-        ENDED
-    }
+    SCHEDULED,
+    ON_SALE,
+    SALES_CLOSED,
+    ENDED
 }
