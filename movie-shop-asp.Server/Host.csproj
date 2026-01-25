@@ -21,7 +21,7 @@
       <Version>10.*-*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -40,6 +40,7 @@
     <ProjectReference Include="..\Screening.API\Screening.API.csproj" />
     <ProjectReference Include="..\Screening.Domain\Screening.Domain.csproj" />
     <ProjectReference Include="..\Screening.Infrastructure\Screening.Infrastructure.csproj" />
+    <ProjectReference Include="..\Theater.API\Theater.API.csproj" />
     <ProjectReference Include="..\Theater.Domain\Theater.Domain.csproj" />
     <ProjectReference Include="..\Theater.Infrastructure\Theater.Infrastructure.csproj" />
   </ItemGroup>

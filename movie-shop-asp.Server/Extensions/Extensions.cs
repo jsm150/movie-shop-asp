@@ -12,6 +12,7 @@ using Screening.Domain.Aggregate.ScreenAggregate;
 using Screening.Domain.Exceptions;
 using Screening.Infrastructure;
 using Screening.Infrastructure.Repository;
+using Theater.API.Controllers;
 using Theater.Domain.Exceptions;
 using Theater.Infrastructure;
 
@@ -47,6 +48,7 @@ namespace movie_shop_asp.Server.Extensions
                     cfg.RegisterServicesFromAssemblyContaining<Program>();
                     cfg.RegisterServicesFromAssemblyContaining<MovieController>(); // Movie
                     cfg.RegisterServicesFromAssemblyContaining<ScreenController>(); // Screening
+                    cfg.RegisterServicesFromAssemblyContaining<TheaterController>(); // Theater
 
                     cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
                     cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
