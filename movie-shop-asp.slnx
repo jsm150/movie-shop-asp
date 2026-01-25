@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="BuildingBlocks.API/BuildingBlocks.API.csproj" Id="8d4e52ff-4022-4e2f-bd1b-c48851ac5b2a" />
     <Project Path="BuildingBlocks/BuildingBlocks.Domain.csproj" />
     <Project Path="movie-shop-asp.Server/Host.csproj" />
   </Folder>

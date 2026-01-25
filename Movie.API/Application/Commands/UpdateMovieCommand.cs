@@ -1,9 +1,10 @@
+using BuildingBlocks.API.Application;
 using MediatR;
 using Movie.Domain.Aggregate;
 
 namespace Movie.API.Application.Commands;
 
-public record UpdateMovieCommand : IRequest<bool>
+public record UpdateMovieCommand : ICommand<bool>
 {
     public required long MovieId { get; init; }
     public required string Title { get; init; }

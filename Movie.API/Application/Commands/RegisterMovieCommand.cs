@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using BuildingBlocks.API.Application;
 using Movie.Domain.Aggregate;
 
 namespace Movie.API.Application.Commands;
 
-public record RegisterMovieCommand : IRequest<bool>
+public record RegisterMovieCommand : ICommand<bool>
 {
     public required string Title { get; init; }
     public required string Director { get; init; }

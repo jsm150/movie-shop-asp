@@ -1,8 +1,9 @@
-using MediatR;
+using BuildingBlocks.API.Application;
+
 
 namespace Screening.API.Application.Commands;
 
-public sealed record CreateScreenCommand : IRequest<long>
+public sealed record CreateScreenCommand : ICommand<long>
 {
     public required long MovieId { get; init; }
     public required long TheaterId { get; init; }

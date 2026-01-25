@@ -25,7 +25,7 @@ public class CreateScreenCommandHandler
 
         var screen = await Screen.CreateAsync(
             movie,
-            theater.TheaterId,
+            theater,
             screenRepository,
             request.StartTime,
             request.EndTime,

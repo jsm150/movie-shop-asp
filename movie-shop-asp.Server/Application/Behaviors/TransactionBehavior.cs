@@ -1,13 +1,14 @@
-﻿using MediatR;
+﻿using BuildingBlocks.API.Application;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using movie_shop_asp.Server.Infrastructure;
 
 namespace movie_shop_asp.Server.Application.Behaviors;
 
-public class TransactionBehavior<TRequest, TResponse>(MovieShopContext _dbContext) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public class TransactionBehavior<TCommand, TResponse>(MovieShopContext _dbContext) : IPipelineBehavior<TCommand, TResponse>
+    where TCommand : ICommand<TResponse>
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TCommand request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var response = default(TResponse);
 

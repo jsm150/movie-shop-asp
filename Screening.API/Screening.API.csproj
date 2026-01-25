@@ -9,6 +9,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.API\BuildingBlocks.API.csproj" />
     <ProjectReference Include="..\Movie.IntegrationEvent\Movie.IntegrationEvent.csproj" />
     <ProjectReference Include="..\Screening.Domain\Screening.Domain.csproj" />
     <ProjectReference Include="..\Theater.IntegrationEvent\Theater.IntegrationEvent.csproj" />
