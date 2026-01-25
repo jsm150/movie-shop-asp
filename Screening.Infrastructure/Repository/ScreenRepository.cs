@@ -28,6 +28,11 @@ public class ScreenRepository(IScreeningContext context) : IScreenRepository
         return await context.Screens.FirstOrDefaultAsync(s => s.TheaterId == theaterId);
     }
 
+    public async Task<bool> Has(long theaterId)
+    {
+        return await context.Screens.AnyAsync(s => s.TheaterId == theaterId);
+    }
+
     public async Task<bool> HasConflict(long theaterId, DateTimeOffset startTime, DateTimeOffset endTime)
     {
         return await context.Screens.AnyAsync(

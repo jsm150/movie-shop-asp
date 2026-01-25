@@ -12,16 +12,16 @@ public class TheaterRepository(IScreeningContext context) : ITheaterRepository
 
     public void Add(Theater value)
     {
-        context.Theaters.Add(value);
+        context.ScreeingTheaters.Add(value);
     }
 
     public async Task<Theater?> FindAsync(long id)
     {
-        return await context.Theaters.FindAsync(id);
+        return await context.ScreeingTheaters.FindAsync(id);
     }
 
     public void Remove(Theater value)
     {
-        context.Theaters.Remove(value);
+        context.ScreeingTheaters.Remove(value);
     }
 }

@@ -89,7 +89,7 @@ public class DeleteScreenTests(IntegrationTestWebAppFactory factory)
         await context.SaveChangesAsync();
 
         var theater = new TheaterEntity(1, [new SeatCode("A1"), new SeatCode("A2")]);
-        context.Theaters.Add(theater);
+        context.ScreeingTheaters.Add(theater);
         await context.SaveChangesAsync();
 
         var createCommand = new CreateScreenCommand

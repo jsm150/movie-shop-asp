@@ -8,20 +8,26 @@ using Movie.API.Infrastructure.Extensions;
 using Movie.API.Infrastructure;
 using Screening.Infrastructure;
 using Screening.Infrastructure.Extensions;
+using Theater.Infrastructure;
+using Theater.Infrastructure.Extensions;
+
 
 namespace movie_shop_asp.Server.Infrastructure;
 
 public class MovieShopContext(DbContextOptions<MovieShopContext> options) :
     DbContext(options),
     IMovieContext,
-    IScreeningContext
+    IScreeningContext,
+    ITheaterContext
 {
     public DbSet<MovieEntity> Movies { get; set; }
     public DbSet<Screening.Domain.Aggregate.MovieAggregate.Movie> ScreeningMovies { get; set; }
 
-    public DbSet<Screening.Domain.Aggregate.TheaterAggregate.Theater> Theaters { get; set; }
+    public DbSet<Screening.Domain.Aggregate.TheaterAggregate.Theater> ScreeingTheaters { get; set; }
 
     public DbSet<Screen> Screens { get; set; }
+
+    public DbSet<Theater.Domain.Aggregate.Theater> Theaters { get; set; }
 
     private IDbContextTransaction? _currentTransaction;
     public bool HasActiveTransaction => _currentTransaction != null;
@@ -31,6 +37,7 @@ public class MovieShopContext(DbContextOptions<MovieShopContext> options) :
     {
         modelBuilder.ApplyMovieModuleConfigurations();
         modelBuilder.ApplyScreeningModuleConfigurations();
+        modelBuilder.ApplyTheaterModuleConfigurations();
     }
 
     public async Task SaveEntitiesAsync(CancellationToken cancellationToken = default)

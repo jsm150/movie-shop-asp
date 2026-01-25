@@ -13,6 +13,8 @@ public class Theater : IAggregateRoot
 
     public IReadOnlyCollection<TheaterSeat> Seats => _seats;
 
+    public bool IsActive { get; private set; } = true;              // 운영 여부
+
     private Theater() { }
 
     public Theater(long theaterId, IReadOnlyCollection<SeatCode> seatCodes)
@@ -21,6 +23,14 @@ public class Theater : IAggregateRoot
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(theaterId);
         TheaterId = theaterId;
         _seats.AddRange(seatCodes.Distinct().Select(seatCode => new TheaterSeat(theaterId, seatCode)));
+    }
+
+    public async Task Deactivate(IScreenRepository screenRepository)
+    {
+        if (await screenRepository.Has(TheaterId))
+            throw new ScreeningDomainException("상영이 존재하는 경우 상영관을 비활성화할 수 없습니다.");
+
+        IsActive = false;
     }
 
     public void ReplaceSeats(IReadOnlyCollection<SeatCode> seatCodes, Screen? screen)

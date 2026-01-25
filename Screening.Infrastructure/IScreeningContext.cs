@@ -10,6 +10,6 @@ namespace Screening.Infrastructure;
 public interface IScreeningContext : IUnitOfWork
 {
     DbSet<Movie> ScreeningMovies { get; set; }
-    DbSet<Theater> Theaters { get; set; } 
+    DbSet<Theater> ScreeingTheaters { get; set; } 
     DbSet<Screen> Screens { get; set; }
 }

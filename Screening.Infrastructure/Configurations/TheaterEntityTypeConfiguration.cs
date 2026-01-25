@@ -16,6 +16,10 @@ public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<TheaterEn
         builder.Property(x => x.TheaterId)
             .ValueGeneratedNever();
 
+        builder.Property(x => x.IsActive)
+            .IsRequired()
+            .HasDefaultValue(true);
+
         builder.OwnsMany(x => x.Seats, seats =>
         {
             seats.ToTable("TheaterSeats", "Screening");

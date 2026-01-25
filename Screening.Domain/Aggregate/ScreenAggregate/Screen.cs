@@ -27,7 +27,7 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
 
         public static async Task<Screen> CreateAsync(
             Movie movie,
-            long theaterId,
+            Theater theater,
             IScreenRepository repository,
             DateTimeOffset startTime,
             DateTimeOffset endTime,
@@ -40,13 +40,15 @@ namespace Screening.Domain.Aggregate.ScreenAggregate
                 throw new ScreeningDomainException("SalesEndAt은 SalesStartAt 이후여야 합니다.");
             if (!movie.CanBeScreened())
                 throw new ScreeningDomainException("상영 가능한 상태의 영화가 아닙니다.");
-            if (await repository.HasConflict(theaterId, startTime, endTime))
+            if (!theater.IsActive)
+                throw new ScreeningDomainException("활성화된 상영관이 아닙니다.");
+            if (await repository.HasConflict(theater.TheaterId, startTime, endTime))
                 throw new ScreeningDomainException("요청 시간에 해당 상영관의 상영이 이미 예약되어 있습니다.");
 
             return new Screen
             {
                 MovieId = movie.MovieId,
-                TheaterId = theaterId,
+                TheaterId = theater.TheaterId,
                 StartTime = startTime,
                 EndTime = endTime,
                 SalesStartAt = salesStartAt,

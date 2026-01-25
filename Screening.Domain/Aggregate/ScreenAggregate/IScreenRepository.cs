@@ -10,4 +10,5 @@ public interface IScreenRepository : IRepository<Screen, long>
     Task<Screen?> FindByTheaterId(long theaterId);
 
     Task<bool> HasConflict(long theaterId, DateTimeOffset startTime, DateTimeOffset endTime);
+    Task<bool> Has(long theaterId);
 }

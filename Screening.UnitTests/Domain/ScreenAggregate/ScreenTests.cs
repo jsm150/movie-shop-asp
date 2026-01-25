@@ -10,12 +10,14 @@ namespace Screening.UnitTests.Domain.ScreenAggregate;
 public class ScreenTests
 {
     private readonly IScreenRepository _repository;
+    private readonly Theater _activeTheater;
 
     public ScreenTests()
     {
         _repository = Substitute.For<IScreenRepository>();
         _repository.HasConflict(Arg.Any<long>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>())
             .Returns(false);
+        _activeTheater = new Theater(1, [new SeatCode("A1")]);
     }
 
     [Fact]
@@ -25,7 +27,7 @@ public class ScreenTests
 
         var act = () => Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 9, 0, 0, TimeSpan.Zero),
@@ -42,7 +44,7 @@ public class ScreenTests
 
         var act = () => Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
@@ -62,7 +64,7 @@ public class ScreenTests
 
         var act = () => Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
@@ -73,12 +75,31 @@ public class ScreenTests
     }
 
     [Fact]
+    public async Task CreateAsync_WhenTheaterIsNotActive_ShouldThrow()
+    {
+        var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
+        var inactiveTheater = CreateInactiveTheater(1, [new SeatCode("A1")]);
+
+        var act = () => Screen.CreateAsync(
+            movie,
+            inactiveTheater,
+            _repository,
+            startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
+            endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
+            salesStartAt: new DateTimeOffset(2026, 1, 1, 8, 0, 0, TimeSpan.Zero),
+            salesEndAt: new DateTimeOffset(2026, 1, 1, 9, 30, 0, TimeSpan.Zero));
+
+        await act.Should().ThrowAsync<ScreeningDomainException>()
+            .WithMessage("*활성화된 상영관*");
+    }
+
+    [Fact]
     public async Task HoldSeats_WhenNotOnSale_ShouldThrow()
     {
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
         var screen = await Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
@@ -103,7 +124,7 @@ public class ScreenTests
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
         var screen = await Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
@@ -121,7 +142,7 @@ public class ScreenTests
         var movie = new Movie { MovieId = 1, MovieStatus = MovieStatus.NOW_SHOWING };
         var screen = await Screen.CreateAsync(
             movie,
-            theaterId: 1,
+            _activeTheater,
             _repository,
             startTime: new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero),
             endTime: new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero),
@@ -131,5 +152,14 @@ public class ScreenTests
         var act = () => screen.ReleaseSeats(Guid.NewGuid());
 
         act.Should().NotThrow();
+    }
+
+    private static Theater CreateInactiveTheater(long theaterId, IReadOnlyCollection<SeatCode> seatCodes)
+    {
+        var theater = new Theater(theaterId, seatCodes);
+        // IsActive를 false로 설정하기 위해 리플렉션 사용
+        var isActiveProperty = typeof(Theater).GetProperty(nameof(Theater.IsActive));
+        isActiveProperty!.SetValue(theater, false);
+        return theater;
     }
 }
