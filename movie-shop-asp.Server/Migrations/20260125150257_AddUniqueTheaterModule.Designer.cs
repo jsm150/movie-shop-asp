@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using movie_shop_asp.Server.Infrastructure;
@@ -11,9 +12,11 @@ using movie_shop_asp.Server.Infrastructure;
 namespace movie_shop_asp.Server.Migrations
 {
     [DbContext(typeof(MovieShopContext))]
-    partial class MovieShopContextModelSnapshot : ModelSnapshot
+    [Migration("20260125150257_AddUniqueTheaterModule")]
+    partial class AddUniqueTheaterModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,7 +149,7 @@ namespace movie_shop_asp.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Theaters", "Theater");
+                    b.ToTable("Theaters", (string)null);
                 });
 
             modelBuilder.Entity("Movie.Domain.Aggregate.Movie", b =>
@@ -307,7 +310,7 @@ namespace movie_shop_asp.Server.Migrations
                             b1.HasKey("TheaterId", "SeatCode")
                                 .HasName("PK_TheaterSeats1");
 
-                            b1.ToTable("TheaterSeats", "Theater");
+                            b1.ToTable("TheaterSeats", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TheaterId");

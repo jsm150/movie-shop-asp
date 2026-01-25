@@ -7,4 +7,5 @@ namespace Theater.Domain.Aggregate;
 
 public interface ITheaterRepository : IRepository<Theater, long>
 {
+    Task<bool> ContainsName(string name);
 }

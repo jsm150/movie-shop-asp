@@ -8,7 +8,7 @@ public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Ag
 {
     public void Configure(EntityTypeBuilder<Domain.Aggregate.Theater> builder)
     {
-        builder.ToTable("Theaters");
+        builder.ToTable("Theaters", "Theater");
 
         // Primary Key
         builder.HasKey(t => t.TheaterId);
@@ -19,6 +19,9 @@ public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Ag
         builder.Property(t => t.Name)
             .IsRequired()
             .HasMaxLength(50);
+
+        builder.HasIndex(t => t.Name)
+            .IsUnique();
 
         builder.Property(t => t.Floor)
             .IsRequired();
@@ -47,19 +50,14 @@ public class TheaterEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Ag
         // TheaterSeat를 Owned Entity로 설정
         builder.OwnsMany(t => t.Seats, seatBuilder =>
         {
-            seatBuilder.ToTable("TheaterSeats");
+            seatBuilder.ToTable("TheaterSeats", "Theater");
 
             seatBuilder.WithOwner()
-                .HasForeignKey(s => s.TheaterId);
+                .HasForeignKey(t => t.TheaterId);
 
             seatBuilder.HasKey(s => new { s.TheaterId, s.SeatCode });
 
-            seatBuilder.Property(s => s.TheaterId)
-                .IsRequired();
-
-            // Value Object (SeatCode) 매핑
             seatBuilder.Property(x => x.SeatCode)
-                .HasConversion(x => x.Value, v => new SeatCode(v))
                 .HasMaxLength(10)
                 .IsRequired();
         });

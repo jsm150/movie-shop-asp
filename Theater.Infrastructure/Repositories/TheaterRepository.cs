@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,11 @@ public class TheaterRepository(ITheaterContext context) : ITheaterRepository
     public void Add(Domain.Aggregate.Theater value)
     {
         context.Theaters.Add(value);
+    }
+
+    public async Task<bool> ContainsName(string name)
+    {
+        return await context.Theaters.AnyAsync(t => t.Name == name);
     }
 
     public async Task<Domain.Aggregate.Theater?> FindAsync(long id)

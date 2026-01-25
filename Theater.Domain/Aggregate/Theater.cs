@@ -81,11 +81,12 @@ public class Theater : IAggregateRoot
 
     private Theater() { }
 
-    public static Theater Create(
+    public async static Task<Theater> CreateAsync(
+        ITheaterRepository theaterRepository,
         string name,
         int floor,
         TheaterType type,
-        List<TheaterSeat> seats,
+        IReadOnlyCollection<string> seats,
         int rowCount,
         int columnCount)
     {
@@ -95,6 +96,8 @@ public class Theater : IAggregateRoot
             throw new TheaterDomainException("좌석 수가 행과 열의 곱과 일치하지 않습니다.");
         if (seats.Distinct().Count() != seats.Count)
             throw new TheaterDomainException("중복된 좌석이 있습니다.");
+        if (await theaterRepository.ContainsName(name))
+            throw new TheaterDomainException($"\"{name}\" 이름의 상영관이 이미 존재합니다.");
 
         var theater = new Theater
         {
@@ -105,7 +108,7 @@ public class Theater : IAggregateRoot
             ColumnCount = columnCount
         };
 
-        theater._seats.AddRange(seats);
+        theater._seats.AddRange(seats.Select(s => new TheaterSeat(s)));
         return theater;
     }
 
