@@ -23,7 +23,7 @@ public abstract class IntegrationTestBase(IntegrationTestWebAppFactory factory) 
         _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions
         {
             DbAdapter = DbAdapter.Postgres,
-            SchemasToInclude = ["Movie", "Screening"]
+            SchemasToInclude = ["Movie", "Screening", "Theater"]
         });
 
         await _respawner.ResetAsync(connection);
